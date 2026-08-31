@@ -1,29 +1,11 @@
 # Content model
 
-The site is evolving into a structured living career archive rather than a single hard-coded portfolio page.
+The site uses structured records for media and visual archive content.
 
-## Structured data
-- `data/media.ts` — podcasts, interviews, press and other media appearances
-- `data/visualArchive.ts` — photographs and exhibition imagery grouped by career chapter
+- `data/media.ts` stores podcasts and public-media appearances.
+- `data/visualArchive.ts` stores iEXCEL, KANEKO, PACE, exhibition, education, Light, Reality and institutional-gallery records.
+- KANEKO exhibition records may include `galleryUrl` links to the original institutional SmugMug archive.
+- Third-party case studies may use `sourceUrl` and `sourceLabel` for contextual attribution and related documentation.
+- Dates are displayed prominently where confirmed. Unknown dates are intentionally not invented.
 
-Each visual record can include:
-- id
-- year when known
-- title
-- subtitle/context
-- image path
-- accessible alt text
-
-## Media organization
-Optimized web assets live in `public/media/`.
-
-Future releases can add structured data for:
-- projects/case studies
-- research/publications
-- speaking engagements
-- community programs
-- press coverage
-- video/audio embeds
-- source verification
-
-The intent is for a single record to be reusable across the homepage, timeline, project pages, archive views and thematic filters.
+Add future records to the data files rather than hard-coding repeated cards whenever practical.
