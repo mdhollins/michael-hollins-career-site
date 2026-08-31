@@ -26,6 +26,14 @@ export const iexcelVisuals: VisualRecord[] = [
     alt: 'Michael Hollins presenting to attendees at the National Summit on Pandemic Preparedness at UNMC iEXCEL in Fall 2019',
   },
   {
+    id: 'iexcel-ops-outreach-2023',
+    year: '2023',
+    title: 'OPS Student Outreach',
+    subtitle: 'Engaging Omaha Public Schools students at UNMC',
+    src: '/media/iexcel_ops_students_2023.webp',
+    alt: 'Michael Hollins educating a group of Omaha Public Schools students at UNMC in 2023',
+  },
+  {
     id: 'iexcel-miami-2026',
     year: '2026',
     title: 'University of Miami',
@@ -219,10 +227,6 @@ export const kanekoLight2018: VisualRecord[] = [
 ];
 
 export const kanekoReality2018: VisualRecord[] = [
-  {
-    id: 'reality-art-science', year: '2018', title: 'Reality: Art & Science', subtitle: 'Healthcare visualization and 3D printing',
-    src: '/media/kaneko_reality_art_science_2018.webp', alt: 'Art and science healthcare visualization installation in Reality at KANEKO in 2018',
-  },
   {
     id: 'reality-nik-fackler', year: '2018', title: 'Nik Fackler + tbd. Dance Collective', subtitle: 'Video installation',
     src: '/media/kaneko_reality_nik_fackler_2018.webp', alt: 'Nik Fackler and tbd. Dance Collective video installation in Reality at KANEKO in 2018',
