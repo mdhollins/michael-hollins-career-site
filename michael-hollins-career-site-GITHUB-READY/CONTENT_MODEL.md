@@ -1,62 +1,29 @@
-# Career Archive Content Model
+# Content model
 
-The public site is driven by structured records rather than hand-built pages.
+The site is evolving into a structured living career archive rather than a single hard-coded portfolio page.
 
-## Core record types
+## Structured data
+- `data/media.ts` — podcasts, interviews, press and other media appearances
+- `data/visualArchive.ts` — photographs and exhibition imagery grouped by career chapter
 
-### Projects
-- slug
+Each visual record can include:
+- id
+- year when known
 - title
-- eyebrow / role context
-- years
-- categories
-- summary
-- impact metrics
-- narrative body
-- supporting sources
-- featured flag
+- subtitle/context
+- image path
+- accessible alt text
 
-### Scholarship
-- year
-- type
-- title
-- role
-- source URL / DOI
+## Media organization
+Optimized web assets live in `public/media/`.
 
-### National engagements
-- year
-- forum
-- role
-- source URL
-
-### Community leadership
-- organization
-- years
-- role
-- summary
-- source URL
-
-### Sources
-- human-readable name
-- URL
-- category
-
-## Future fields
-
-As the archive expands, add:
-- collaborators
-- institutions
-- locations
-- image gallery
-- video/audio embeds
-- awards
+Future releases can add structured data for:
+- projects/case studies
+- research/publications
+- speaking engagements
+- community programs
 - press coverage
-- related records
-- tags / keywords
-- featured quote
-- verification notes
-- private/public visibility
-- date precision
-- downloadable files
+- video/audio embeds
+- source verification
 
-A future headless CMS can mirror this exact structure.
+The intent is for a single record to be reusable across the homepage, timeline, project pages, archive views and thematic filters.
