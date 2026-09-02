@@ -44,10 +44,10 @@ function VisualFigure({v, className=''}:{v:VisualRecord;className?:string;key?:s
 export default function Home(){return <main>
 <header className="top"><a className="brand" href="#top"><b>MH</b><span>Michael Hollins<small>Living career archive</small></span></a><nav><a href="#work">Work</a><a href="#kaneko">KANEKO</a><a href="#pace">PACE</a><a href="#research">Research</a><a href="#media">Media</a><a href="#speaking">Speaking</a><a href="#sources">Sources</a></nav></header>
 
-<section id="top" className="hero"><img className="heroPhoto" src="/media/hero.webp" alt="Michael Hollins at UNMC Davis Global Center"/><div className="shade"></div><div className="wrap heroCopy"><p className="eyebrow light">Executive leadership · technology · scholarship · community</p><h1>Omaha roots.<br/>National reach.</h1><p className="lead">Omaha-grown interdisciplinary executive, faculty member and scholar-practitioner building connections across creative leadership, emerging technology, health professions education, research, business development and community impact.</p><div className="buttons"><a className="btn lime" href="#work">Explore the career archive</a></div></div><div className="photoTag">Michael Hollins · UNMC Davis Global Center · 2024</div></section>
+<section id="top" className="hero"><img className="heroPhoto" src="/media/hero.webp" alt="Michael Hollins at UNMC Davis Global Center"/><div className="shade"></div><div className="wrap heroCopy"><p className="eyebrow light">Executive leadership · technology · scholarship · community</p><h1 className="heroStatement"><span>Connecting Ideas.</span><span>Building Experiences.</span><span>Expanding Impact.</span></h1><p className="lead">Omaha-grown interdisciplinary executive, faculty member and scholar-practitioner building connections across creative leadership, emerging technology, health professions education, research, business development and community impact.</p><div className="buttons"><a className="btn lime" href="#work">Explore the career archive</a></div></div><div className="photoTag">Michael Hollins · UNMC Davis Global Center · 2024</div></section>
 
 <section className="metrics wrap" aria-label="Selected accomplishments">
-  <div><small>Career</small><b>100+</b><span>Creative Producer for 100+ Art, Media & Education Projects</span><em>Academia · Industry · Community</em></div>
+  <div><b>15+</b><span>Years as creative producer of education, media and art</span><em>Academia · Industry · Community</em></div>
   <div><small>2026</small><b>$8M</b><span>National Science Foundation Award, Co-PI</span><em>E-RISE · 3D NE Collaboration with UNO, UNL & UNMC</em></div>
   <div><small>2022</small><b>5,500+</b><span>Common Senses Festival</span><em>Attendees</em></div>
   <div><small>2013–2018</small><b>12</b><span>KANEKO</span><em>Thematic exhibition & programming seasons</em></div>
@@ -139,4 +139,57 @@ export default function Home(){return <main>
 </div></section>
 
 <footer><div className="wrap"><div><p className="eyebrow aqua">Living career archive</p><h2>Michael Hollins</h2><p>Assistant Vice Chancellor · Assistant Professor · UNMC<br/>Omaha, Nebraska</p></div><div><a href="mailto:michael.hollins@unmc.edu">michael.hollins@unmc.edu</a><a href="https://www.linkedin.com/in/michael-hollins-70463371/">LinkedIn ↗</a></div></div></footer>
+
+<style>{`
+/* v0.9 presentation refinements */
+.eyebrow,
+.featureCard > span,
+.sourceGroupHead > span {
+  display: none !important;
+}
+
+.heading > p,
+.chapterIntro > p {
+  display: none !important;
+}
+
+.featureCard h3 {
+  margin-top: 0 !important;
+}
+
+.heroPhoto {
+  transform: scale(1.12) translateX(5.2%) !important;
+  transform-origin: center center !important;
+}
+
+.heroStatement {
+  font-size: clamp(3rem, 6.4vw, 6.4rem) !important;
+  line-height: .9 !important;
+  letter-spacing: -.06em !important;
+  max-width: 840px !important;
+  margin-top: 0 !important;
+}
+
+.heroStatement span {
+  display: block;
+}
+
+@media (max-width: 700px) {
+  .heroPhoto {
+    transform: scale(1.10) translateX(3.2%) !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .heroPhoto {
+    object-position: center 42% !important;
+    transform: scale(1.09) translateX(2.8%) !important;
+  }
+
+  .heroStatement {
+    font-size: clamp(2.7rem, 13vw, 4.5rem) !important;
+    line-height: .92 !important;
+  }
+}
+`}</style>
 </main>}
