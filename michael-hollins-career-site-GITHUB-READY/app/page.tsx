@@ -1,5 +1,6 @@
 import { media } from '../data/media';
 import { cvSourceGroups } from '../data/cvSources';
+import LazyLoopVideo from './LazyLoopVideo';
 import {
   iexcelVisuals,
   kanekoEducation,
@@ -29,8 +30,11 @@ const speaking = [
 ];
 
 function VisualFigure({v, className=''}:{v:VisualRecord;className?:string;key?:string}){
+  const isWaterLoop = v.id === 'water-2016';
   return <figure className={className}>
-    <img src={v.src} alt={v.alt}/>
+    {isWaterLoop
+      ? <LazyLoopVideo src="/media/kaneko_water_loop.mp4" poster={v.src} className="archiveLoopVideo"/>
+      : <img src={v.src} alt={v.alt}/>}
     <figcaption>
       {v.year && <span className="yearPill">{v.year}</span>}
       <b>{v.title}</b>
@@ -93,7 +97,7 @@ export default function Home(){return <main>
     <figure><img src="/media/kaneko_water.webp" alt="Michael Hollins teaching students during WATER at KANEKO"/><figcaption><span className="yearPill">2016</span><b>WATER</b><span>Gallery teaching and public education</span></figcaption></figure>
     <figure><img src="/media/kaneko_passion.webp" alt="Michael Hollins teaching students during Passion and Obsession at KANEKO"/><figcaption><span className="yearPill">2016</span><b>Passion & Obsession</b><span>Connecting students with exhibition ideas</span></figcaption></figure>
     <figure className="wide"><img src="/media/kaneko_reality_1.webp" alt="Michael Hollins presenting during Reality at KANEKO"/><figcaption><span className="yearPill">2018</span><b>Reality</b><span>Public programming at the convergence of VR, holography, art and science</span></figcaption></figure>
-    <figure><img src="/media/kaneko_reality_2.webp" alt="Michael Hollins presenting on stage during Reality at KANEKO"/><figcaption><span className="yearPill">2018</span><b>Reality</b><span>Speaking across art, science and emerging technology</span></figcaption></figure>
+    <figure><img src="/media/kaneko_arts_workshop_light.webp" alt="Michael Hollins engaging children during an arts workshop in KANEKO's Light environment"/><figcaption><span className="yearPill">2018</span><b>Arts workshop</b><span>Hands-on engagement with young participants inside an immersive installation</span></figcaption></figure>
     <figure><img src="/media/kaneko_google_ai.webp" alt="Michael Hollins introducing a presentation on artificial intelligence by Chris Russell of Google during Reality at KANEKO"/><figcaption><span className="yearPill">2018</span><b>Artificial intelligence at Reality</b><span>Introducing Chris Russell of Google for a public program on AI</span></figcaption></figure>
   </div>
 
@@ -106,7 +110,7 @@ export default function Home(){return <main>
   </div>
 
   <div className="archiveDivider stacked"><div><p className="eyebrow aqua">Education & community</p><h3>Turning exhibitions into places for dialogue, interpretation and access.</h3></div><p>In addition to designing exhibitions and often installing them alongside the artists, Hollins hosted youth and learners of all ages for hands-on, experiential workshops that connected exhibition ideas with creative exploration, dialogue and public learning.</p></div>
-  <div className="educationGrid">{kanekoEducation.map((v,i)=><VisualFigure key={v.id} v={v} className={(i===1||i===6)?'educationWide':''}/>)}</div>
+  <div className="educationGrid">{kanekoEducation.filter(v=>v.id!=='storytelling-context-2016').map((v,i)=><VisualFigure key={v.id} v={v} className={(i===0||i===5)?'educationWide':''}/>)}</div>
 
   <div className="archiveDivider stacked"><div><p className="eyebrow aqua">Leadership & collaboration</p><h3>Working alongside artists while building the institution around the work.</h3></div></div>
   <div className="leadershipPair">{kanekoLeadership.map(v=><VisualFigure key={v.id} v={v}/>)}</div>
@@ -117,12 +121,6 @@ export default function Home(){return <main>
   <div className="archiveDivider stacked"><div><p className="eyebrow aqua">2018 · Reality</p><h3>Art, science, healthcare visualization, virtual reality, augmented reality and public conversation.</h3></div><p><a className="sectionExternal" href="https://kaneko.smugmug.com/Exhibitions/13-REALITY" target="_blank" rel="noreferrer">View full Reality exhibition gallery ↗</a></p></div>
   <div className="realityGrid">{kanekoReality2018.map((v,i)=><VisualFigure key={v.id} v={v} className={i===0?'realityWide':''}/>)}</div>
 
-  <div className="archiveDivider"><p className="eyebrow aqua">Public programs</p><h3>Speaking, access and public conversation.</h3></div>
-  <div className="kanekoArchive">
-    <figure className="archiveTall"><img src="/media/kaneko_arts_workshop_light.webp" alt="Michael Hollins engaging children during an arts workshop in KANEKO's Light environment"/><figcaption><span className="yearPill">2018</span><b>Arts workshop</b><span>Hands-on engagement with young participants inside an immersive installation</span></figcaption></figure>
-    <figure><img src="/media/kaneko_arts_workshop_gallery.webp" alt="Michael Hollins speaking with arts workshop participants in a KANEKO gallery"/><figcaption><b>Gallery learning</b><span>Facilitating conversation and access to contemporary art</span></figcaption></figure>
-    <figure><img src="/media/kaneko_speaking_open_space_2.webp" alt="Michael Hollins speaking from a podium at KANEKO"/><figcaption><b>Open Space for Your Mind</b><span>Public speaking and program leadership at KANEKO</span></figcaption></figure>
-  </div>
 </div></section>
 
 <section id="pace" className="chapter pace"><div className="wrap"><div className="chapterIntro"><div><p className="eyebrow">PACE · 2018–2019</p><h2>Building an organization while the building itself was taking shape.</h2></div><p>During development of the Hoff Family Arts & Culture Center, Hollins worked with PACE leadership, Alley Poyner and project partners, contributing creative, programming, gallery-layout, operational and user-experience input as the new arts center took shape.</p></div><div className="paceArchiveGrid">{paceVisuals.map((v,i)=><VisualFigure key={v.id} v={v} className={i===0?'paceLead':''}/>)}</div><div className="paceSources"><div><p className="eyebrow">Explore the completed Hoff Center</p><h3>From construction planning to a functioning arts and culture campus.</h3></div><div className="paceSourceLinks"><a href="https://www.alleypoyner.com/design/project/hoff-center/" target="_blank" rel="noreferrer"><b>Architecture & Project Profile</b><span>Alley Poyner ↗</span></a><a href="https://www.paceartsiowa.org/openhouse" target="_blank" rel="noreferrer"><b>Hoff Family Arts & Culture Center</b><span>PACE ↗</span></a><a href="https://amballet.org/pace-breaks-ground-on-27-million-hoff-family-arts-culture-center/" target="_blank" rel="noreferrer"><b>Hoff Center Groundbreaking</b><span>American Midwest Ballet ↗</span></a></div></div></div></section>
@@ -172,6 +170,58 @@ export default function Home(){return <main>
 
 .heroStatement span {
   display: block;
+}
+
+/* v0.9.2: lazy WATER timelapse prototype */
+.exhibitionTimeline .archiveLoopVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .55s ease;
+}
+
+.exhibitionTimeline figure:hover .archiveLoopVideo {
+  transform: scale(1.02);
+}
+
+/* v0.9.1: prevent KANEKO institutional gallery labels from colliding on desktop */
+.galleryIndex {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px 12px !important;
+}
+
+.galleryIndex a {
+  grid-template-columns: 58px minmax(0, 1fr) !important;
+  grid-template-areas:
+    "year title"
+    ". action";
+  align-items: start !important;
+  row-gap: 7px !important;
+  padding: 14px 15px !important;
+}
+
+.galleryIndex a > span {
+  grid-area: year;
+}
+
+.galleryIndex a > b {
+  grid-area: title;
+  min-width: 0;
+  line-height: 1.25 !important;
+}
+
+.galleryIndex a > em {
+  grid-area: action;
+  justify-self: start;
+  white-space: normal !important;
+  line-height: 1.2;
+}
+
+@media (max-width: 700px) {
+  .galleryIndex {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 @media (max-width: 700px) {
