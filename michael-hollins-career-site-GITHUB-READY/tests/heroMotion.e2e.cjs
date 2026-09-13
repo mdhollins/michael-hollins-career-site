@@ -217,7 +217,7 @@ describe('homepage copy refresh', () => {
 
     const festivalMetric = page
       .locator('.metrics > div')
-      .filter({ hasText: '5,500+' });
+      .filter({ hasText: '5,000+' });
     assert.equal(
       await festivalMetric.locator('em').innerText(),
       'Attendees to city-wide autism advocacy festival',
@@ -248,6 +248,81 @@ describe('homepage copy refresh', () => {
       'Passion & Obsession',
     );
 
+    await context.close();
+  });
+
+  test('uses one KANEKO season label and removes Gallery Learning', async () => {
+    const { context, page } = await openPage();
+    const archive = page.locator('#kaneko');
+
+    assert.equal(
+      await archive.locator('.archiveDivider').first().locator('h3').innerText(),
+      'Exhibition and programming seasons.',
+    );
+    assert.match(
+      await archive.locator('.archiveDivider').first().locator(':scope > p').innerText(),
+      /KANEKO years \(2013–2018\)\.$/,
+    );
+    assert.equal(await archive.locator('.exhibitionTimeline figure').count(), 10);
+    assert.deepEqual(
+      await archive.locator('.exhibitionTimeline figcaption > span:not(.yearPill)').allInnerTexts(),
+      Array(10).fill('Exhibition and programming season'),
+    );
+    assert.equal(await archive.getByText('Gallery learning', { exact: true }).count(), 0);
+
+    await context.close();
+  });
+
+  test('presents the 2022 Common Senses Festival as a sourced chapter', async () => {
+    const { context, page } = await openPage();
+    const festival = page.locator('#common-senses');
+
+    await festival.getByRole('heading', { level: 2, name: 'Building inclusion at city scale.' }).waitFor();
+    assert.equal(await festival.getByText('Festival coordinator', { exact: false }).count() > 0, true);
+    assert.deepEqual(
+      await festival.locator('.festivalStat b').allInnerTexts(),
+      ['5,000', '122', '29', '138'],
+    );
+    assert.deepEqual(
+      await festival.locator('.festivalLinks a').evaluateAll((links) =>
+        links.map((link) => ({ href: link.getAttribute('href'), target: link.getAttribute('target') })),
+      ),
+      [
+        { href: 'https://www.commonsensesfestival.org/2022-recap', target: '_blank' },
+        { href: 'https://cdn.prod.website-files.com/68a8a835f537008f09e5e5cc/68e2f0fc18576ae809879b5a_2022-final-report-compressed.pdf', target: '_blank' },
+        { href: 'https://www.omahamagazine.com/uncategorized/autism-action-partnership-our-common-senses/', target: '_blank' },
+        { href: 'https://www.nescifest.com/event/omaha-science-cafe-with-common-senses-festival/', target: '_blank' },
+      ],
+    );
+
+    await context.close();
+  });
+
+  test('keeps the festival chapter inside the mobile viewport', async () => {
+    const { context, page } = await openPage({ viewport: { height: 844, width: 390 } });
+    await page.locator('#common-senses').scrollIntoViewIfNeeded();
+    const width = await page.evaluate(() => ({
+      clientWidth: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+    }));
+    assert.ok(width.scrollWidth <= width.clientWidth);
+    await context.close();
+  });
+
+  test('uses the supplied 2019 National Summit photograph', async () => {
+    const { context, page } = await openPage();
+    const summitImage = page.locator(
+      '.currentVisuals img[src="/media/iexcel_pandemic_summit_2019.webp"]',
+    );
+    await summitImage.waitFor();
+    const imageState = await summitImage.evaluate((image) => ({
+      complete: image.complete,
+      naturalHeight: image.naturalHeight,
+      naturalWidth: image.naturalWidth,
+    }));
+    assert.equal(imageState.complete, true);
+    assert.ok(imageState.naturalWidth > 0);
+    assert.ok(imageState.naturalHeight > 0);
     await context.close();
   });
 });
