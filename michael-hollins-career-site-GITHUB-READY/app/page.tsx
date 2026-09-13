@@ -104,7 +104,7 @@ export default function Home(){return <main>
     <figure><img src="/media/kaneko_google_ai.webp" alt="Michael Hollins introducing a presentation on artificial intelligence by Chris Russell of Google during Reality at KANEKO"/><figcaption><span className="yearPill">2018</span><b>Artificial intelligence at Reality</b><span>Introducing Chris Russell of Google for a public program on AI</span></figcaption></figure>
   </div>
 
-  <div className="archiveDivider stacked"><div><p className="eyebrow aqua">Exhibition archive</p><h3>A visual chronology of interdisciplinary programming.</h3></div><p>Selected installation views establish the range of art, design, architecture, culture, immersive media and participatory learning that shaped the KANEKO years.</p></div>
+  <div className="archiveDivider stacked"><div><p className="eyebrow aqua">Exhibition archive</p><h3>Exhibition and programming seasons.</h3></div><p>Selected installation views establish the range of art, design, architecture, culture, immersive media and participatory learning that shaped the KANEKO years (2013–2018).</p></div>
   <div className="exhibitionTimeline">{kanekoExhibitions.map((v,i)=><VisualFigure key={v.id} v={v} className={(i===2||i===5||i===8||i===9)?'timelineWide':''}/>)}</div>
 
   <div className="galleryIndexBlock">
