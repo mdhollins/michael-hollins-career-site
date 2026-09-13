@@ -9,6 +9,12 @@ export type MediaRecord = {
   listenUrl?: string;
   duration?: string;
   featured?: boolean;
+  youtubeId?: string;
+  poster?: string;
+  relatedUrl?: string;
+  relatedLabel?: string;
+  anchorId?: string;
+  playerTitle?: string;
   tags: string[];
 };
 
@@ -33,5 +39,24 @@ export const media: MediaRecord[] = [
       'Medical Imaging',
       'National Media',
     ],
+  },
+  {
+    id: 'epson-infinity-room-kaneko',
+    year: '2018',
+    type: 'Video interview',
+    title: 'Infinity Room at KANEKO',
+    outlet: 'Epson America',
+    description:
+      'In this Epson interview, Michael Hollins discusses bringing Refik Anadol’s Infinity Room to KANEKO and the projection technology behind the installation.',
+    primaryUrl: 'https://www.youtube.com/watch?v=GDw2PxRGbmA',
+    duration: '4:29',
+    youtubeId: 'GDw2PxRGbmA',
+    poster: '/media/kaneko_light_refik_anadol_2018.webp',
+    anchorId: 'media-epson-infinity-room',
+    playerTitle: 'Epson Projectors | Infinity Room at KANEKO by Refik Anadol',
+    relatedUrl:
+      'https://news.epson.com/case-studies/refik-anadol-infinity-room-projectors',
+    relatedLabel: 'Read the Epson case study ↗',
+    tags: ['KANEKO', 'Refik Anadol', 'Immersive Art', 'Epson'],
   },
 ];

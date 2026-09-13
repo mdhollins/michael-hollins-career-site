@@ -251,3 +251,170 @@ describe('homepage copy refresh', () => {
     await context.close();
   });
 });
+
+describe('Epson Infinity Room interview', () => {
+  test('connects the Light archive photograph to the complete media feature', async () => {
+    const { context, page } = await openPage();
+
+    const archiveCard = page.locator('.immersiveGrid figure').filter({
+      has: page.locator(
+        'img[src="/media/kaneko_light_refik_anadol_2018.webp"]',
+      ),
+    });
+    assert.equal(
+      await archiveCard.locator('figcaption b').innerText(),
+      'Refik Anadol — Infinity Room',
+    );
+    const caseStudyLink = archiveCard.getByRole('link', {
+      name: 'Related case study: Epson',
+    });
+    const interviewLink = archiveCard.getByRole('link', {
+      name: 'Watch the Epson interview ↓',
+    });
+    assert.equal(await caseStudyLink.count(), 1);
+    assert.equal(await interviewLink.count(), 1);
+    assert.equal(
+      await caseStudyLink.getAttribute('href'),
+      'https://news.epson.com/case-studies/refik-anadol-infinity-room-projectors',
+    );
+    assert.equal(
+      await interviewLink.getAttribute('href'),
+      '#media-epson-infinity-room',
+    );
+
+    const mediaFeature = page.locator('#media-epson-infinity-room');
+    assert.equal(
+      await mediaFeature.getByRole('heading', { level: 3 }).innerText(),
+      'Infinity Room at KANEKO',
+    );
+    assert.equal(await mediaFeature.locator('.mediaOutlet').innerText(), 'Epson America');
+    assert.equal(await mediaFeature.getByText('2018', { exact: true }).count(), 1);
+    assert.equal(
+      await mediaFeature.getByText('Video interview', { exact: true }).count(),
+      1,
+    );
+    assert.equal(await mediaFeature.getByText('4:29', { exact: true }).count(), 1);
+    assert.equal(
+      await mediaFeature
+        .getByRole('link', { name: 'Watch on YouTube ↗' })
+        .getAttribute('href'),
+      'https://www.youtube.com/watch?v=GDw2PxRGbmA',
+    );
+    assert.equal(
+      await mediaFeature
+        .getByRole('link', { name: 'Read the Epson case study ↗' })
+        .getAttribute('href'),
+      'https://news.epson.com/case-studies/refik-anadol-infinity-room-projectors',
+    );
+
+    const podcastFeature = page.locator('.mediaFeature').filter({
+      has: page.getByRole('heading', {
+        level: 3,
+        name: 'Simulating The Human Body',
+      }),
+    });
+    assert.equal(await podcastFeature.count(), 1);
+    assert.equal(
+      await podcastFeature.locator('.mediaOutlet').innerText(),
+      'The Futurists · Episode 328',
+    );
+    assert.equal(
+      await podcastFeature
+        .getByRole('link', { name: 'Official episode ↗' })
+        .getAttribute('href'),
+      'https://www.thefuturists.com/episodes/simulating-the-human-body',
+    );
+    assert.equal(
+      await page
+        .locator('iframe[title="The Futurists — Simulating The Human Body"]')
+        .getAttribute('src'),
+      'https://embed.podcasts.apple.com/au/podcast/simulating-the-human-body/id1615809726?i=1000755164201',
+    );
+
+    await context.close();
+  });
+
+  test('loads the privacy-enhanced YouTube player only after activation', async () => {
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    const youtubeRequests = [];
+    page.on('request', (request) => {
+      const hostname = new URL(request.url()).hostname;
+      if (hostname === 'www.youtube.com' || hostname === 'www.youtube-nocookie.com') {
+        youtubeRequests.push(request.url());
+      }
+    });
+    await page.goto(baseUrl, { waitUntil: 'networkidle' });
+    const mediaFeature = page.locator('#media-epson-infinity-room');
+
+    assert.equal(await mediaFeature.locator('iframe').count(), 0);
+    assert.deepEqual(youtubeRequests, []);
+    const playButton = mediaFeature.getByRole('button', {
+      name: 'Play interview: Infinity Room at KANEKO, 4:29, Epson America',
+    });
+    assert.equal(await playButton.count(), 1);
+    assert.match(
+      await playButton.locator('img').getAttribute('src'),
+      /kaneko_light_refik_anadol_2018\.webp/,
+    );
+
+    const embedRequest = page.waitForRequest((request) =>
+      request.url().startsWith(
+        'https://www.youtube-nocookie.com/embed/GDw2PxRGbmA?',
+      ),
+    );
+    await playButton.press('Enter');
+    const player = mediaFeature.locator('iframe');
+    await player.waitFor();
+    assert.equal(
+      (await embedRequest).url(),
+      'https://www.youtube-nocookie.com/embed/GDw2PxRGbmA?autoplay=1&rel=0&playsinline=1',
+    );
+
+    const properties = await player.evaluate((element) => ({
+      allowFullscreen: element.hasAttribute('allowfullscreen'),
+      source: element.getAttribute('src'),
+      title: element.getAttribute('title'),
+    }));
+    assert.deepEqual(properties, {
+      allowFullscreen: true,
+      source:
+        'https://www.youtube-nocookie.com/embed/GDw2PxRGbmA?autoplay=1&rel=0&playsinline=1',
+      title: 'Epson Projectors | Infinity Room at KANEKO by Refik Anadol',
+    });
+    await page.waitForFunction(
+      () => document.activeElement?.matches('#media-epson-infinity-room iframe'),
+    );
+
+    await context.close();
+  });
+
+  test('keeps the video feature within the mobile viewport', async () => {
+    const { context, page } = await openPage({
+      viewport: { height: 844, width: 390 },
+    });
+
+    const mediaFeature = page.locator('#media-epson-infinity-room');
+    await mediaFeature.scrollIntoViewIfNeeded();
+    await mediaFeature
+      .getByRole('button', {
+        name: 'Play interview: Infinity Room at KANEKO, 4:29, Epson America',
+      })
+      .click();
+    await mediaFeature.locator('iframe').waitFor();
+    const layout = await page.evaluate(() => ({
+      clientWidth: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+    }));
+    assert.ok(layout.scrollWidth <= layout.clientWidth);
+
+    const [featureBox, previewBox] = await Promise.all([
+      mediaFeature.boundingBox(),
+      mediaFeature.locator('.youtubePreview').boundingBox(),
+    ]);
+    assert.ok(featureBox.width <= layout.clientWidth);
+    assert.ok(previewBox.width <= featureBox.width);
+
+    await context.close();
+  });
+});
