@@ -2,6 +2,7 @@ import { media } from '../data/media';
 import { cvSourceGroups } from '../data/cvSources';
 import HeroMotion from './HeroMotion';
 import LazyLoopVideo from './LazyLoopVideo';
+import YouTubePreview from './YouTubePreview';
 import {
   iexcelVisuals,
   kanekoEducation,
@@ -42,6 +43,7 @@ function VisualFigure({v, className=''}:{v:VisualRecord;className?:string;key?:s
       <span>{v.subtitle}</span>
       {v.galleryUrl && <a className="captionLink" href={v.galleryUrl} target="_blank" rel="noreferrer">View full exhibition gallery ↗</a>}
       {v.sourceUrl && <a className="captionLink" href={v.sourceUrl} target="_blank" rel="noreferrer">{v.sourceLabel || 'Source ↗'}</a>}
+      {v.mediaHref && <a className="captionLink" href={v.mediaHref}>{v.mediaLabel || 'Watch related media ↓'}</a>}
     </figcaption>
   </figure>
 }
@@ -128,7 +130,19 @@ export default function Home(){return <main>
 
 <section id="research" className="section wrap"><div className="heading"><div><p className="eyebrow">Research & scholarship</p><h2>From implementing technology to studying how it should be used.</h2></div></div><div className="records">{scholarship.map(([year,type,title,desc,url])=><a key={title} href={url} target="_blank" rel="noreferrer"><span>{year}</span><div><small>{type}</small><h3>{title}</h3><p>{desc}</p></div><b>↗</b></a>)}</div></section>
 
-<section id="media" className="mediaSection section"><div className="wrap"><div className="heading mediaHeading"><div><p className="eyebrow">Media & public engagement</p><h2>Ideas carried into public conversation.</h2></div><p>Selected podcasts, interviews, television, radio, documentary appearances and press coverage connecting emerging technology, healthcare education and innovation with broader audiences.</p></div>{media.filter(m=>m.featured).map(m=><article className="mediaFeature" key={m.id}><div className="mediaVisual" aria-hidden="true"><span className="mediaPulse"></span><div className="mediaMonogram">TF</div><p>THE FUTURISTS</p></div><div className="mediaCopy"><div className="mediaMeta"><span>{m.year}</span><span>{m.type}</span>{m.duration&&<span>{m.duration}</span>}</div><p className="eyebrow">Featured appearance</p><h3>{m.title}</h3><p className="mediaOutlet">{m.outlet}</p><p>{m.description}</p><div className="tagRow">{m.tags.map(t=><span key={t}>{t}</span>)}</div><div className="mediaActions"><a className="btn navyBtn" href={m.primaryUrl} target="_blank" rel="noreferrer">Official episode ↗</a>{m.listenUrl&&<a className="textLink" href={m.listenUrl} target="_blank" rel="noreferrer">Listen on Apple Podcasts ↗</a>}</div></div></article>)}<div className="embedShell"><iframe title="The Futurists — Simulating The Human Body" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameBorder="0" height="175" style={{width:'100%',overflow:'hidden',borderRadius:'12px'}} sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="https://embed.podcasts.apple.com/au/podcast/simulating-the-human-body/id1615809726?i=1000755164201"></iframe></div></div></section>
+<section id="media" className="mediaSection section">
+  <div className="wrap">
+    <div className="heading mediaHeading"><div><p className="eyebrow">Media & public engagement</p><h2>Ideas carried into public conversation.</h2></div><p>Selected podcasts, interviews, television, radio, documentary appearances and press coverage connecting emerging technology, healthcare education and innovation with broader audiences.</p></div>
+    {media.filter(m=>m.featured && !m.youtubeId).map(m=><article className="mediaFeature" key={m.id}><div className="mediaVisual" aria-hidden="true"><span className="mediaPulse"></span><div className="mediaMonogram">TF</div><p>THE FUTURISTS</p></div><div className="mediaCopy"><div className="mediaMeta"><span>{m.year}</span><span>{m.type}</span>{m.duration&&<span>{m.duration}</span>}</div><p className="eyebrow">Featured appearance</p><h3>{m.title}</h3><p className="mediaOutlet">{m.outlet}</p><p>{m.description}</p><div className="tagRow">{m.tags.map(t=><span key={t}>{t}</span>)}</div><div className="mediaActions"><a className="btn navyBtn" href={m.primaryUrl} target="_blank" rel="noreferrer">Official episode ↗</a>{m.listenUrl&&<a className="textLink" href={m.listenUrl} target="_blank" rel="noreferrer">Listen on Apple Podcasts ↗</a>}</div></div></article>)}
+    <div className="embedShell"><iframe title="The Futurists — Simulating The Human Body" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameBorder="0" height="175" style={{width:'100%',overflow:'hidden',borderRadius:'12px'}} sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation" src="https://embed.podcasts.apple.com/au/podcast/simulating-the-human-body/id1615809726?i=1000755164201"></iframe></div>
+    {media.filter(m=>m.youtubeId && m.poster).map(m=><article id={m.anchorId || `media-${m.id}`} className="mediaFeature mediaVideoFeature" key={m.id}>
+      <div className="mediaVideoVisual">
+        <YouTubePreview videoId={m.youtubeId!} poster={m.poster!} title={m.playerTitle || `${m.title} — ${m.outlet}`} label={m.title} duration={m.duration || 'Video'} outlet={m.outlet} />
+      </div>
+      <div className="mediaCopy"><div className="mediaMeta"><span>{m.year}</span><span>{m.type}</span>{m.duration&&<span>{m.duration}</span>}</div><p className="eyebrow">Featured interview</p><h3>{m.title}</h3><p className="mediaOutlet">{m.outlet}</p><p>{m.description}</p><div className="tagRow">{m.tags.map(t=><span key={t}>{t}</span>)}</div><div className="mediaActions"><a className="btn navyBtn" href={m.primaryUrl} target="_blank" rel="noreferrer">Watch on YouTube ↗</a>{m.relatedUrl&&<a className="textLink" href={m.relatedUrl} target="_blank" rel="noreferrer">{m.relatedLabel || 'Related article ↗'}</a>}</div></div>
+    </article>)}
+  </div>
+</section>
 
 <section id="speaking" className="soft section"><div className="wrap"><div className="heading"><div><p className="eyebrow">National voice</p><h2>Speaking where health, technology, education and media converge.</h2></div></div><div className="records">{speaking.map(([year,title,desc,url])=><a key={title} href={url} target="_blank" rel="noreferrer"><span>{year}</span><div><small>Forum</small><h3>{title}</h3><p>{desc}</p></div><b>↗</b></a>)}</div></div></section>
 

@@ -8,6 +8,8 @@ export type VisualRecord = {
   galleryUrl?: string;
   sourceUrl?: string;
   sourceLabel?: string;
+  mediaHref?: string;
+  mediaLabel?: string;
 };
 
 export type ArchiveLink = {
@@ -215,6 +217,7 @@ export const kanekoLight2018: VisualRecord[] = [
     id: 'light-refik-anadol', year: '2018', title: 'Refik Anadol — Infinity Room', subtitle: 'Light exhibition',
     src: '/media/kaneko_light_refik_anadol_2018.webp', alt: 'Visitor inside Refik Anadol Infinity Room at KANEKO in 2018',
     sourceUrl: 'https://news.epson.com/case-studies/refik-anadol-infinity-room-projectors', sourceLabel: 'Related case study: Epson',
+    mediaHref: '#media-epson-infinity-room', mediaLabel: 'Watch the Epson interview ↓',
   },
   {
     id: 'light-blumen-lumen', year: '2018', title: 'Blumen Lumen by Foldhaus', subtitle: 'Light exhibition',

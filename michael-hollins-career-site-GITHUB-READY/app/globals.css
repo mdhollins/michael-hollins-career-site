@@ -228,3 +228,156 @@
     min-height: 440px;
   }
 }
+
+/* v0.9.4 — Epson Infinity Room interview */
+.mediaVideoFeature {
+  grid-template-columns: 1.08fr .92fr;
+  margin-top: 44px;
+  scroll-margin-top: 94px;
+}
+
+.mediaVideoVisual {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 24px;
+  background: var(--navy);
+}
+
+.youtubePreview {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #03101f;
+}
+
+.youtubePreviewButton,
+.youtubePreviewPlayer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.youtubePreviewButton {
+  padding: 0;
+  overflow: hidden;
+  color: white;
+  text-align: left;
+  font: inherit;
+  background: #03101f;
+  cursor: pointer;
+}
+
+.youtubePreviewButton img {
+  object-fit: cover;
+  object-position: center 46%;
+  transition: transform .4s ease;
+}
+
+.youtubePreviewButton:hover img {
+  transform: scale(1.025);
+}
+
+.youtubePreviewButton:focus-visible {
+  outline: 4px solid var(--lime);
+  outline-offset: -6px;
+}
+
+.youtubePreviewShade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(3,16,31,.04) 25%, rgba(3,16,31,.86) 100%);
+}
+
+.youtubePreviewPlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: grid;
+  width: 68px;
+  height: 68px;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.72);
+  border-radius: 50%;
+  color: var(--navy);
+  font-size: 1.25rem;
+  line-height: 1;
+  background: var(--lime);
+  box-shadow: 0 12px 35px rgba(0,0,0,.28);
+  transform: translate(-50%, -50%);
+}
+
+.youtubePreviewLabel {
+  position: absolute;
+  right: 22px;
+  bottom: 20px;
+  left: 22px;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.youtubePreviewLabel b {
+  font-size: 1rem;
+}
+
+.youtubePreviewLabel small {
+  color: #d5e5ef;
+  font-size: .68rem;
+  font-weight: 850;
+}
+
+.youtubePreviewPlayer {
+  display: block;
+  background: #000;
+}
+
+@media (max-width: 850px) {
+  .mediaVideoFeature {
+    grid-template-columns: 1fr;
+  }
+
+  .mediaVideoVisual {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 580px) {
+  .mediaVideoFeature {
+    margin-top: 34px;
+  }
+
+  .mediaVideoVisual {
+    min-height: 0;
+    padding: 12px;
+  }
+
+  .youtubePreview {
+    border-radius: 12px;
+  }
+
+  .youtubePreviewPlay {
+    width: 56px;
+    height: 56px;
+    font-size: 1rem;
+  }
+
+  .youtubePreviewLabel {
+    right: 14px;
+    bottom: 12px;
+    left: 14px;
+  }
+
+  .youtubePreviewLabel small {
+    display: none;
+  }
+}
