@@ -47,14 +47,14 @@ function VisualFigure({v, className=''}:{v:VisualRecord;className?:string;key?:s
 }
 
 export default function Home(){return <main>
-<header className="top"><a className="brand" href="#top"><b>MH</b><span>Michael Hollins<small>Living career archive</small></span></a><nav><a href="#work">Work</a><a href="#kaneko">KANEKO</a><a href="#pace">PACE</a><a href="#research">Research</a><a href="#media">Media</a><a href="#speaking">Speaking</a><a href="#sources">Sources</a></nav></header>
+<header className="top"><a className="brand" href="#top"><b>MH</b><span>Michael Hollins<small>Living career archive · Always evolving</small></span></a><nav><a href="#work">Work</a><a href="#kaneko">KANEKO</a><a href="#pace">PACE</a><a href="#research">Research</a><a href="#media">Media</a><a href="#speaking">Speaking</a><a href="#sources">Sources</a></nav></header>
 
 <section id="top" className="hero"><HeroMotion src="/media/hero_motion_v1.mp4" poster="/media/hero.webp" alt="Michael Hollins at UNMC Davis Global Center"/><div className="shade"></div><div className="wrap heroCopy"><p className="eyebrow light">Executive leadership · technology · scholarship · community</p><h1 className="heroStatement"><span>Explorer.</span><span>Creator.</span><span>Connector.</span></h1><p className="lead">Omaha-grown interdisciplinary executive, faculty member and scholar-practitioner building connections across creative leadership, emerging technology, health professions education, research, business development and community impact.</p><div className="buttons"><a className="btn lime" href="#work">Explore the career archive</a></div></div><div className="photoTag">Michael Hollins · UNMC Davis Global Center · 2024</div></section>
 
 <section className="metrics wrap" aria-label="Selected accomplishments">
-  <div><b>15+</b><span>Years as creative producer of education, media and art</span><em>Academia · Industry · Community</em></div>
+  <div><b>15+</b><span>Years of creative production in education, media and art</span><em>Academia · Industry · Community</em></div>
   <div><small>2026</small><b>$8M</b><span>National Science Foundation Award, Co-PI</span><em>E-RISE · 3D NE Collaboration with UNO, UNL & UNMC</em></div>
-  <div><small>2022</small><b>5,500+</b><span>Common Senses Festival</span><em>Attendees</em></div>
+  <div><small>2022</small><b>5,500+</b><span>Common Senses Festival</span><em>Attendees to city-wide autism advocacy festival</em></div>
   <div><small>2013–2018</small><b>12</b><span>KANEKO</span><em>Thematic exhibition & programming seasons</em></div>
 </section>
 
