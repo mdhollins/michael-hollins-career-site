@@ -177,3 +177,77 @@ describe('preserved visual behavior', () => {
     await context.close();
   });
 });
+
+describe('homepage copy refresh', () => {
+  test('describes the living archive without overflowing the mobile header', async () => {
+    const { context, page } = await openPage({
+      viewport: { height: 844, width: 390 },
+    });
+
+    const archiveStatus = page.locator('.brand small');
+    assert.equal(
+      await archiveStatus.innerText(),
+      'Living career archive · Always evolving',
+    );
+    assert.equal(await archiveStatus.isVisible(), true);
+
+    const pageWidth = await page.evaluate(() => ({
+      clientWidth: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+    }));
+    assert.ok(pageWidth.scrollWidth <= pageWidth.clientWidth);
+
+    await context.close();
+  });
+
+  test('keeps the requested descriptions attached to their accomplishment metrics', async () => {
+    const { context, page } = await openPage();
+
+    const experienceMetric = page
+      .locator('.metrics > div')
+      .filter({ hasText: '15+' });
+    assert.equal(
+      await experienceMetric.locator('span').innerText(),
+      'Years of creative production in education, media and art',
+    );
+    assert.equal(
+      await experienceMetric.locator('em').innerText(),
+      'Academia · Industry · Community',
+    );
+
+    const festivalMetric = page
+      .locator('.metrics > div')
+      .filter({ hasText: '5,500+' });
+    assert.equal(
+      await festivalMetric.locator('em').innerText(),
+      'Attendees to city-wide autism advocacy festival',
+    );
+
+    await context.close();
+  });
+
+  test('labels the two education photos with their featured artists', async () => {
+    const { context, page } = await openPage();
+
+    const violaFreyCard = page.locator('.educationGrid figure').filter({
+      has: page.locator('img[src="/media/kaneko_passion_teaching_2016.webp"]'),
+    });
+    assert.equal(await violaFreyCard.locator('figcaption b').innerText(), 'Viola Frey');
+
+    const goroSuzukiCard = page.locator('.educationGrid figure').filter({
+      has: page.locator('img[src="/media/kaneko_passion_whyarts_2016.webp"]'),
+    });
+    assert.equal(await goroSuzukiCard.locator('figcaption b').innerText(), 'Goro Suzuki');
+
+    assert.equal(
+      await page
+        .locator('.mosaic figure')
+        .filter({ has: page.locator('img[src="/media/kaneko_passion.webp"]') })
+        .locator('figcaption b')
+        .innerText(),
+      'Passion & Obsession',
+    );
+
+    await context.close();
+  });
+});

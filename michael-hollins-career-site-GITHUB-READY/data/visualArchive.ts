@@ -178,11 +178,11 @@ export const kanekoEducation: VisualRecord[] = [
     src: '/media/kaneko_water_teaching_2016.webp', alt: 'Michael Hollins teaching students beside photography in the WATER exhibition at KANEKO in 2016',
   },
   {
-    id: 'passion-teaching-2016', year: '2016', title: 'Passion & Obsession', subtitle: 'Student engagement in the gallery',
+    id: 'passion-teaching-2016', year: '2016', title: 'Viola Frey', subtitle: 'Student engagement in the gallery',
     src: '/media/kaneko_passion_teaching_2016.webp', alt: 'Michael Hollins teaching a student group during Passion and Obsession at KANEKO in 2016',
   },
   {
-    id: 'passion-whyarts-2016', year: '2016', title: 'Passion & Obsession', subtitle: 'WhyArts gallery teaching',
+    id: 'passion-whyarts-2016', year: '2016', title: 'Goro Suzuki', subtitle: 'WhyArts gallery teaching',
     src: '/media/kaneko_passion_whyarts_2016.webp', alt: 'Michael Hollins teaching WhyArts participants during Passion and Obsession at KANEKO in 2016',
   },
   {
