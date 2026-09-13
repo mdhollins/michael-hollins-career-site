@@ -217,7 +217,7 @@ describe('homepage copy refresh', () => {
 
     const festivalMetric = page
       .locator('.metrics > div')
-      .filter({ hasText: '5,000+' });
+      .filter({ hasText: '5,000' });
     assert.equal(
       await festivalMetric.locator('em').innerText(),
       'Attendees to city-wide autism advocacy festival',
