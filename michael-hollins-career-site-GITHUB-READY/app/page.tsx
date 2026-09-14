@@ -143,15 +143,26 @@ export default function Home(){return <main>
     </div>
 
     <div className="festivalImpact">
-      <div className="festivalNarrative">
-        <p className="festivalKicker">One city. Many ways to experience it.</p>
-        <h3>Creative encounters designed for connection.</h3>
-        <p>The festival paired interactive installations and sensory-friendly performances with public conversation, inviting people to explore how different minds and bodies experience a shared community.</p>
-        <p>Hollins helped connect <em>The Living Room</em> and <em>Cardio Chairs</em> installations to the broader festival story, including the related Omaha Science Café program.</p>
+      <div className="festivalGallery">
+        <figure className="festivalPhoto festivalPhotoLead">
+          <img src="/media/common_senses_panel_2022.jpg" width="2268" height="1992" loading="lazy" alt="Panel discussion before an audience at the 2022 Common Senses Festival"/>
+          <figcaption><span>Festival panel discussion · 2022</span></figcaption>
+        </figure>
+        <figure className="festivalPhoto">
+          <img src="/media/common_senses_planning_2022.jpg" width="1400" height="1112" loading="lazy" alt="Michael Hollins and a collaborator reviewing artwork for the 2022 Common Senses Festival"/>
+          <figcaption><span>Festival planning session · 2022</span></figcaption>
+        </figure>
       </div>
-      <dl className="festivalStats" aria-label="Common Senses Festival impact">
-        {festivalStats.map(stat=><div className="festivalStat" key={stat.label}><dt><b>{stat.value}</b></dt><dd>{stat.label}</dd></div>)}
-      </dl>
+      <div className="festivalImpactBody">
+        <div className="festivalNarrative">
+          <h3>Creative encounters designed for connection.</h3>
+          <p>The festival paired interactive installations and sensory-friendly performances with public conversation, inviting people to explore how different minds and bodies experience a shared community.</p>
+          <p>Hollins co-founded the Common Senses Festival and coordinated the inaugural event. In addition to organizing events and installations, he presented at the Omaha Science Café, moderated the opening night panel, and served as a media representative.</p>
+        </div>
+        <dl className="festivalStats" aria-label="Common Senses Festival impact">
+          {festivalStats.map(stat=><div className="festivalStat" key={stat.label}><dt><b>{stat.value}</b></dt><dd>{stat.label}</dd></div>)}
+        </dl>
+      </div>
     </div>
 
     <div className="festivalSources">

@@ -283,10 +283,6 @@ describe('homepage copy refresh', () => {
     await festival.getByRole('heading', { level: 2, name: 'Building inclusion at city scale.' }).waitFor();
     assert.equal(await festival.getByText('Festival coordinator', { exact: false }).count() > 0, true);
     assert.deepEqual(
-      await festival.locator('.festivalStat b').allInnerTexts(),
-      ['5,000', '122', '29', '138'],
-    );
-    assert.deepEqual(
       await festival.locator('.festivalLinks a').evaluateAll((links) =>
         links.map((link) => ({ href: link.getAttribute('href'), target: link.getAttribute('target') })),
       ),
@@ -295,6 +291,93 @@ describe('homepage copy refresh', () => {
         { href: 'https://cdn.prod.website-files.com/68a8a835f537008f09e5e5cc/68e2f0fc18576ae809879b5a_2022-final-report-compressed.pdf', target: '_blank' },
         { href: 'https://www.omahamagazine.com/uncategorized/autism-action-partnership-our-common-senses/', target: '_blank' },
         { href: 'https://www.nescifest.com/event/omaha-science-cafe-with-common-senses-festival/', target: '_blank' },
+      ],
+    );
+
+    await context.close();
+  });
+
+  test('foregrounds the Festival year and revised leadership story', async () => {
+    const { context, page } = await openPage();
+    const festival = page.locator('#common-senses');
+    const festivalYear = festival.locator('.festivalYear');
+
+    await festivalYear.waitFor();
+    assert.equal(await festivalYear.textContent(), 'Common Senses Festival · 2022');
+    assert.ok(await festivalYear.evaluate((element) => Number.parseFloat(getComputedStyle(element).fontSize) >= 16));
+    assert.equal(await festival.getByText('One city. Many ways to experience it.', { exact: true }).count(), 0);
+    assert.equal(
+      await festival.locator('.festivalNarrative > p:not(.festivalKicker)').nth(1).innerText(),
+      'Hollins co-founded the Common Senses Festival and coordinated the inaugural event. In addition to organizing events and installations, he presented at the Omaha Science Café, moderated the opening night panel, and served as a media representative.',
+    );
+
+    await context.close();
+  });
+
+  test('presents the revised Festival impact as one continuous band', async () => {
+    const { context, page } = await openPage();
+    const festival = page.locator('#common-senses');
+
+    assert.deepEqual(
+      await festival.locator('.festivalStat b').allInnerTexts(),
+      ['5,000', '31', '37', '9'],
+    );
+    assert.deepEqual(
+      await festival.locator('.festivalStat dd').allInnerTexts(),
+      ['Attendees', 'Days', 'Events', 'Installations'],
+    );
+    const statLayout = await festival.locator('.festivalStat').evaluateAll((items) => items.map((item) => {
+      const box = item.getBoundingClientRect();
+      const style = getComputedStyle(item);
+      return {
+        backgroundColor: style.backgroundColor,
+        borderRadius: style.borderRadius,
+        top: Math.round(box.top),
+      };
+    }));
+    assert.equal(new Set(statLayout.map((item) => item.top)).size, 1);
+    assert.equal(statLayout.every((item) => item.backgroundColor === 'rgba(0, 0, 0, 0)'), true);
+    assert.equal(statLayout.every((item) => item.borderRadius === '0px'), true);
+
+    await context.close();
+  });
+
+  test('loads the two supplied Festival photographs', async () => {
+    const { context, page } = await openPage();
+    const images = page.locator('#common-senses .festivalGallery img');
+
+    assert.equal(await images.count(), 2);
+    await images.first().scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => Array.from(
+      document.querySelectorAll('#common-senses .festivalGallery img'),
+    ).every((image) => image.complete && image.naturalWidth > 0));
+    assert.deepEqual(
+      await images.evaluateAll((items) => items.map((image) => image.getAttribute('src'))),
+      [
+        '/media/common_senses_panel_2022.jpg',
+        '/media/common_senses_planning_2022.jpg',
+      ],
+    );
+    assert.deepEqual(
+      await images.evaluateAll((items) => items.map((image) => ({
+        alt: image.getAttribute('alt'),
+        complete: image.complete,
+        naturalHeight: image.naturalHeight,
+        naturalWidth: image.naturalWidth,
+      }))),
+      [
+        {
+          alt: 'Panel discussion before an audience at the 2022 Common Senses Festival',
+          complete: true,
+          naturalHeight: 1992,
+          naturalWidth: 2268,
+        },
+        {
+          alt: 'Michael Hollins and a collaborator reviewing artwork for the 2022 Common Senses Festival',
+          complete: true,
+          naturalHeight: 1112,
+          naturalWidth: 1400,
+        },
       ],
     );
 
