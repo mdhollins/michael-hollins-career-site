@@ -1,8 +1,8 @@
 export const festivalStats = [
   { value: '5,000', label: 'Attendees' },
-  { value: '122', label: 'Families at Up and Away' },
-  { value: '29', label: 'Organizations at the Arts & Inclusion Symposium' },
-  { value: '138', label: 'Voices heard' },
+  { value: '31', label: 'Days' },
+  { value: '37', label: 'Events' },
+  { value: '9', label: 'Installations' },
 ] as const;
 
 export const festivalLinks = [
