@@ -328,6 +328,27 @@ describe('homepage copy refresh', () => {
     assert.ok(imageState.naturalHeight > 0);
     await context.close();
   });
+
+  test('keeps the 2019 summit card inside the mobile viewport', async () => {
+    const { context, page } = await openPage({ viewport: { height: 844, width: 390 } });
+    const summitImage = page.locator(
+      '.currentVisuals img[src="/media/iexcel_pandemic_summit_2019.webp"]',
+    );
+
+    await summitImage.scrollIntoViewIfNeeded();
+    await summitImage.waitFor();
+    const box = await summitImage.boundingBox();
+    assert.ok(box);
+    assert.ok(box.x >= 0);
+    assert.ok(box.x + box.width <= 390);
+
+    const width = await page.evaluate(() => ({
+      clientWidth: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+    }));
+    assert.ok(width.scrollWidth <= width.clientWidth);
+    await context.close();
+  });
 });
 
 describe('Epson Infinity Room interview', () => {
