@@ -1,5 +1,6 @@
 import { media } from '../data/media';
 import { cvSourceGroups } from '../data/cvSources';
+import { festivalLinks, festivalStats } from '../data/commonSenses';
 import HeroMotion from './HeroMotion';
 import LazyLoopVideo from './LazyLoopVideo';
 import YouTubePreview from './YouTubePreview';
@@ -49,14 +50,14 @@ function VisualFigure({v, className=''}:{v:VisualRecord;className?:string;key?:s
 }
 
 export default function Home(){return <main>
-<header className="top"><a className="brand" href="#top"><b>MH</b><span>Michael Hollins<small>Living career archive · Always evolving</small></span></a><nav><a href="#work">Work</a><a href="#kaneko">KANEKO</a><a href="#pace">PACE</a><a href="#research">Research</a><a href="#media">Media</a><a href="#speaking">Speaking</a><a href="#sources">Sources</a></nav></header>
+<header className="top"><a className="brand" href="#top"><b>MH</b><span>Michael Hollins<small>Living career archive · Always evolving</small></span></a><nav><a href="#work">Work</a><a href="#kaneko">KANEKO</a><a href="#pace">PACE</a><a href="#common-senses">Festival</a><a href="#research">Research</a><a href="#media">Media</a><a href="#speaking">Speaking</a><a href="#sources">Sources</a></nav></header>
 
 <section id="top" className="hero"><HeroMotion src="/media/hero_motion_v1.mp4" poster="/media/hero.webp" alt="Michael Hollins at UNMC Davis Global Center"/><div className="shade"></div><div className="wrap heroCopy"><p className="eyebrow light">Executive leadership · technology · scholarship · community</p><h1 className="heroStatement"><span>Explorer.</span><span>Creator.</span><span>Connector.</span></h1><p className="lead">Omaha-grown interdisciplinary executive, faculty member and scholar-practitioner building connections across creative leadership, emerging technology, health professions education, research, business development and community impact.</p><div className="buttons"><a className="btn lime" href="#work">Explore the career archive</a></div></div><div className="photoTag">Michael Hollins · UNMC Davis Global Center · 2024</div></section>
 
 <section className="metrics wrap" aria-label="Selected accomplishments">
   <div><b>15+</b><span>Years of creative production in education, media and art</span><em>Academia · Industry · Community</em></div>
   <div><small>2026</small><b>$8M</b><span>National Science Foundation Award, Co-PI</span><em>E-RISE · 3D NE Collaboration with UNO, UNL & UNMC</em></div>
-  <div><small>2022</small><b>5,500+</b><span>Common Senses Festival</span><em>Attendees to city-wide autism advocacy festival</em></div>
+  <div><small>2022</small><b>5,000</b><span>Common Senses Festival</span><em>Attendees to city-wide autism advocacy festival</em></div>
   <div><small>2013–2018</small><b>12</b><span>KANEKO</span><em>Thematic exhibition & programming seasons</em></div>
 </section>
 
@@ -104,7 +105,7 @@ export default function Home(){return <main>
     <figure><img src="/media/kaneko_google_ai.webp" alt="Michael Hollins introducing a presentation on artificial intelligence by Chris Russell of Google during Reality at KANEKO"/><figcaption><span className="yearPill">2018</span><b>Artificial intelligence at Reality</b><span>Introducing Chris Russell of Google for a public program on AI</span></figcaption></figure>
   </div>
 
-  <div className="archiveDivider stacked"><div><p className="eyebrow aqua">Exhibition archive</p><h3>A visual chronology of interdisciplinary programming.</h3></div><p>Selected installation views establish the range of art, design, architecture, culture, immersive media and participatory learning that shaped the KANEKO years.</p></div>
+  <div className="archiveDivider stacked"><div><p className="eyebrow aqua">Exhibition archive</p><h3>Exhibition and programming seasons.</h3></div><p>Selected installation views establish the range of art, design, architecture, culture, immersive media and participatory learning that shaped the KANEKO years (2013–2018).</p></div>
   <div className="exhibitionTimeline">{kanekoExhibitions.map((v,i)=><VisualFigure key={v.id} v={v} className={(i===2||i===5||i===8||i===9)?'timelineWide':''}/>)}</div>
 
   <div className="galleryIndexBlock">
@@ -127,6 +128,40 @@ export default function Home(){return <main>
 </div></section>
 
 <section id="pace" className="chapter pace"><div className="wrap"><div className="chapterIntro"><div><p className="eyebrow">PACE · 2018–2019</p><h2>Building an organization while the building itself was taking shape.</h2></div><p>During development of the Hoff Family Arts & Culture Center, Hollins worked with PACE leadership, Alley Poyner and project partners, contributing creative, programming, gallery-layout, operational and user-experience input as the new arts center took shape.</p></div><div className="paceArchiveGrid">{paceVisuals.map((v,i)=><VisualFigure key={v.id} v={v} className={i===0?'paceLead':''}/>)}</div><div className="paceSources"><div><p className="eyebrow">Explore the completed Hoff Center</p><h3>From construction planning to a functioning arts and culture campus.</h3></div><div className="paceSourceLinks"><a href="https://www.alleypoyner.com/design/project/hoff-center/" target="_blank" rel="noreferrer"><b>Architecture & Project Profile</b><span>Alley Poyner ↗</span></a><a href="https://www.paceartsiowa.org/openhouse" target="_blank" rel="noreferrer"><b>Hoff Family Arts & Culture Center</b><span>PACE ↗</span></a><a href="https://amballet.org/pace-breaks-ground-on-27-million-hoff-family-arts-culture-center/" target="_blank" rel="noreferrer"><b>Hoff Center Groundbreaking</b><span>American Midwest Ballet ↗</span></a></div></div></div></section>
+
+<section id="common-senses" className="chapter commonSenses">
+  <div className="wrap">
+    <div className="commonSensesIntro">
+      <div>
+        <p className="festivalYear">Common Senses Festival · 2022</p>
+        <h2>Building inclusion at city scale.</h2>
+      </div>
+      <div className="festivalIntroCopy">
+        <p className="festivalRole">Festival coordinator · Volunteer leadership</p>
+        <p>Hollins coordinated the inaugural citywide, month-long festival, bringing organizations and audiences together around arts, science, technology and autism acceptance.</p>
+      </div>
+    </div>
+
+    <div className="festivalImpact">
+      <div className="festivalNarrative">
+        <p className="festivalKicker">One city. Many ways to experience it.</p>
+        <h3>Creative encounters designed for connection.</h3>
+        <p>The festival paired interactive installations and sensory-friendly performances with public conversation, inviting people to explore how different minds and bodies experience a shared community.</p>
+        <p>Hollins helped connect <em>The Living Room</em> and <em>Cardio Chairs</em> installations to the broader festival story, including the related Omaha Science Café program.</p>
+      </div>
+      <dl className="festivalStats" aria-label="Common Senses Festival impact">
+        {festivalStats.map(stat=><div className="festivalStat" key={stat.label}><dt><b>{stat.value}</b></dt><dd>{stat.label}</dd></div>)}
+      </dl>
+    </div>
+
+    <div className="festivalSources">
+      <h3>Explore the festival record.</h3>
+      <div className="festivalLinks">
+        {festivalLinks.map(link=><a href={link.url} target="_blank" rel="noreferrer" key={link.label}><b>{link.label}</b><span>Source ↗</span></a>)}
+      </div>
+    </div>
+  </div>
+</section>
 
 <section id="research" className="section wrap"><div className="heading"><div><p className="eyebrow">Research & scholarship</p><h2>From implementing technology to studying how it should be used.</h2></div></div><div className="records">{scholarship.map(([year,type,title,desc,url])=><a key={title} href={url} target="_blank" rel="noreferrer"><span>{year}</span><div><small>{type}</small><h3>{title}</h3><p>{desc}</p></div><b>↗</b></a>)}</div></section>
 
