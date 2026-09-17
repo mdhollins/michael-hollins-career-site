@@ -17,7 +17,7 @@ import {
 } from '../data/visualArchive';
 
 const scholarship = [
-  ['2026','Funded research','$8M NSF E-RISE / Nebraska Center for 3D Innovation','Co-principal investigator','https://www.unomaha.edu/news/uno-secures-8m-nsf-award-to-establish-nebraska-center-for-3d-innovation.php'],
+  ['2026','Funded research','$8M NSF E-RISE / Nebraska Center for 3D Innovation','Principal investigator','https://www.unomaha.edu/news/uno-secures-8m-nsf-award-to-establish-nebraska-center-for-3d-innovation.php'],
   ['2026','Book chapter','Enhancing Interprofessional Healthcare Simulation to Address the Needs of All Patient Populations','Co-author · Springer','https://link.springer.com/book/10.1007/978-3-032-03947-7'],
   ['2026','Award-recognized scholarship','Implementing Holographic Instruction in Multi-Campus DPT Education','Co-author · Second Place Outstanding Project Award','https://www.unmc.edu/academy/scholarship/spotlight.html'],
   ['2025','Publication','The Current State and Future of Haptics in Healthcare Simulation','Co-author · Society for Simulation in Healthcare STORM','https://www.ssih.org/sites/default/files/2025-10/STORM-Vol.%204%2C%20Issue%202_0.pdf'],
@@ -56,8 +56,8 @@ export default function Home(){return <main>
 
 <section className="metrics wrap" aria-label="Selected accomplishments">
   <div><b>15+</b><span>Years of creative production in education, media and art</span><em>Academia · Industry · Community</em></div>
-  <div><small>2026</small><b>$8M</b><span>National Science Foundation Award, Co-PI</span><em>E-RISE · 3D NE Collaboration with UNO, UNL & UNMC</em></div>
-  <div><small>2022</small><b>5,000</b><span>Common Senses Festival</span><em>Attendees to city-wide autism advocacy festival</em></div>
+  <div><small>2026</small><b>$8M</b><span>National Science Foundation Award, PI</span><em>E-RISE · 3D NE Collaboration with UNO, UNL & UNMC</em></div>
+  <div><small>2022</small><b>5,500</b><span>Common Senses Festival</span><em>Attendees to city-wide autism advocacy festival</em></div>
   <div><small>2013–2018</small><b>12</b><span>KANEKO</span><em>Thematic exhibition & programming seasons</em></div>
 </section>
 
@@ -65,7 +65,7 @@ export default function Home(){return <main>
   <div className="heading"><div><p className="eyebrow">Selected work</p><h2>A career built at the intersections.</h2></div><p>The archive is designed to show the work, not just list it: institutions built, technologies translated, communities connected and ideas brought into public life.</p></div>
   <div className="featureGrid">
     <a className="featureCard" href="#iexcel-visuals"><span>2019–present</span><h3>UNMC iEXCEL</h3><p>Executive leadership in creative production, emerging technology, business development, statewide education, research, external relations and advancement.</p><strong>Explore current work →</strong></a>
-    <a className="featureCard" href="#research"><span>2026–present</span><h3>Nebraska Center for 3D Innovation</h3><p>Co-principal investigator on NSF Award No. 2546319 supporting an $8 million statewide E-RISE initiative.</p><strong>Explore research →</strong></a>
+    <a className="featureCard" href="#research"><span>2026–present</span><h3>Nebraska Center for 3D Innovation</h3><p>Principal investigator on NSF Award No. 2546319 supporting an $8 million statewide E-RISE initiative.</p><strong>Explore research →</strong></a>
     <a className="featureCard" href="#iexcel-visuals"><span>2023–present</span><h3>Statewide & rural health education</h3><p>Holography, VR, connected 3D iWalls and multi-site production used to reduce geographic barriers across Nebraska.</p><strong>Explore visual archive →</strong></a>
   </div>
   <div id="iexcel-visuals" className="visualIntro"><p className="eyebrow">iEXCEL visual archive</p><h3>From simulation leadership to national conversations about the future of learning.</h3></div>
@@ -144,13 +144,13 @@ export default function Home(){return <main>
 
     <div className="festivalImpact">
       <div className="festivalGallery">
-        <figure className="festivalPhoto festivalPhotoLead">
-          <img src="/media/common_senses_panel_2022.jpg" width="2268" height="1992" loading="lazy" alt="Panel discussion before an audience at the 2022 Common Senses Festival"/>
-          <figcaption><span>Festival panel discussion · 2022</span></figcaption>
+        <figure className="festivalPhoto festivalPhotoPlanning">
+          <img src="/media/common_senses_planning_2022.jpg" width="1400" height="1112" loading="lazy" alt="Michael Hollins and a collaborator in a Festival branding design session in 2019"/>
+          <figcaption><span>Festival branding design session, 2019</span></figcaption>
         </figure>
-        <figure className="festivalPhoto">
-          <img src="/media/common_senses_planning_2022.jpg" width="1400" height="1112" loading="lazy" alt="Michael Hollins and a collaborator reviewing artwork for the 2022 Common Senses Festival"/>
-          <figcaption><span>Festival planning session · 2022</span></figcaption>
+        <figure className="festivalPhoto festivalPhotoPanel">
+          <img src="/media/common_senses_panel_2022_upscaled.jpg" width="3840" height="3372" loading="lazy" alt="Panel discussion before an audience at the 2022 Common Senses Festival"/>
+          <figcaption><span>Festival panel discussion · 2022</span></figcaption>
         </figure>
       </div>
       <div className="festivalImpactBody">
