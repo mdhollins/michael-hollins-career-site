@@ -218,12 +218,44 @@ describe('homepage copy refresh', () => {
     const festivalMetric = page
       .locator('.metrics > div')
       .filter({
-        has: page.locator('b').filter({ hasText: /^5,000$/ }),
+        has: page.locator('b').filter({ hasText: /^5,500$/ }),
       });
-    assert.equal(await festivalMetric.locator('b').innerText(), '5,000');
+    assert.equal(await festivalMetric.locator('b').innerText(), '5,500');
     assert.equal(
       await festivalMetric.locator('em').innerText(),
       'Attendees to city-wide autism advocacy festival',
+    );
+
+    await context.close();
+  });
+
+  test('identifies Hollins as the principal investigator throughout the NSF story', async () => {
+    const { context, page } = await openPage();
+
+    const nsfMetric = page.locator('.metrics > div').filter({ hasText: '$8M' });
+    assert.equal(
+      await nsfMetric.locator('span').innerText(),
+      'National Science Foundation Award, PI',
+    );
+
+    const centerCard = page.locator('.featureCard').filter({
+      hasText: 'Nebraska Center for 3D Innovation',
+    });
+    assert.equal(
+      await centerCard.locator('p').innerText(),
+      'Principal investigator on NSF Award No. 2546319 supporting an $8 million statewide E-RISE initiative.',
+    );
+
+    const researchRecord = page.locator('#research .records a').filter({
+      hasText: '$8M NSF E-RISE / Nebraska Center for 3D Innovation',
+    });
+    assert.equal(
+      await researchRecord.locator('p').innerText(),
+      'Principal investigator',
+    );
+    assert.equal(
+      await page.getByText(/co[- ]?(?:pi|principal investigator)/i).count(),
+      0,
     );
 
     await context.close();
@@ -320,7 +352,7 @@ describe('homepage copy refresh', () => {
 
     assert.deepEqual(
       await festival.locator('.festivalStat b').allInnerTexts(),
-      ['5,000', '31', '37', '9'],
+      ['5,500', '31', '37', '9'],
     );
     assert.deepEqual(
       await festival.locator('.festivalStat dd').allInnerTexts(),
@@ -342,9 +374,10 @@ describe('homepage copy refresh', () => {
     await context.close();
   });
 
-  test('loads the two supplied Festival photographs', async () => {
+  test('orders the branding session before the enhanced Festival panel photograph', async () => {
     const { context, page } = await openPage();
-    const images = page.locator('#common-senses .festivalGallery img');
+    const photos = page.locator('#common-senses .festivalPhoto');
+    const images = photos.locator('img');
 
     assert.equal(await images.count(), 2);
     await images.first().scrollIntoViewIfNeeded();
@@ -352,34 +385,37 @@ describe('homepage copy refresh', () => {
       document.querySelectorAll('#common-senses .festivalGallery img'),
     ).every((image) => image.complete && image.naturalWidth > 0));
     assert.deepEqual(
-      await images.evaluateAll((items) => items.map((image) => image.getAttribute('src'))),
-      [
-        '/media/common_senses_panel_2022.jpg',
-        '/media/common_senses_planning_2022.jpg',
-      ],
-    );
-    assert.deepEqual(
-      await images.evaluateAll((items) => items.map((image) => ({
-        alt: image.getAttribute('alt'),
-        complete: image.complete,
-        naturalHeight: image.naturalHeight,
-        naturalWidth: image.naturalWidth,
+      await photos.evaluateAll((items) => items.map((photo) => ({
+        alt: photo.querySelector('img')?.getAttribute('alt'),
+        caption: photo.querySelector('figcaption span')?.textContent?.trim(),
+        src: photo.querySelector('img')?.getAttribute('src'),
       }))),
       [
         {
-          alt: 'Panel discussion before an audience at the 2022 Common Senses Festival',
-          complete: true,
-          naturalHeight: 1992,
-          naturalWidth: 2268,
+          alt: 'Michael Hollins and a collaborator in a Festival branding design session in 2019',
+          caption: 'Festival branding design session, 2019',
+          src: '/media/common_senses_planning_2022.jpg',
         },
         {
-          alt: 'Michael Hollins and a collaborator reviewing artwork for the 2022 Common Senses Festival',
-          complete: true,
-          naturalHeight: 1112,
-          naturalWidth: 1400,
+          alt: 'Panel discussion before an audience at the 2022 Common Senses Festival',
+          caption: 'Festival panel discussion · 2022',
+          src: '/media/common_senses_panel_2022_upscaled.jpg',
         },
       ],
     );
+    const imageState = await images.evaluateAll((items) => items.map((image) => ({
+      complete: image.complete,
+      naturalHeight: image.naturalHeight,
+      naturalWidth: image.naturalWidth,
+    })));
+    assert.deepEqual(imageState[0], {
+      complete: true,
+      naturalHeight: 1112,
+      naturalWidth: 1400,
+    });
+    assert.equal(imageState[1].complete, true);
+    assert.ok(imageState[1].naturalWidth >= 3840);
+    assert.ok(imageState[1].naturalHeight > 1992);
 
     await context.close();
   });
@@ -387,6 +423,40 @@ describe('homepage copy refresh', () => {
   test('keeps the festival chapter inside the mobile viewport', async () => {
     const { context, page } = await openPage({ viewport: { height: 844, width: 390 } });
     await page.locator('#common-senses').scrollIntoViewIfNeeded();
+    const photoLayout = await page.locator('#common-senses .festivalPhoto').evaluateAll((photos) =>
+      photos.map((photo) => {
+        const photoBox = photo.getBoundingClientRect();
+        const captionBox = photo.querySelector('figcaption')?.getBoundingClientRect();
+        return {
+          bottom: Math.round(photoBox.bottom),
+          captionBottom: Math.round(captionBox?.bottom ?? 0),
+          captionTop: Math.round(captionBox?.top ?? 0),
+          left: Math.round(photoBox.left),
+          right: Math.round(photoBox.right),
+          top: Math.round(photoBox.top),
+        };
+      }),
+    );
+    assert.equal(photoLayout.length, 2);
+    assert.ok(photoLayout[1].top - photoLayout[0].bottom >= 12);
+    assert.ok(photoLayout.every((photo) => photo.captionTop >= photo.top));
+    assert.ok(photoLayout.every((photo) => photo.captionBottom <= photo.bottom));
+    assert.ok(photoLayout.every((photo) => photo.left >= 0 && photo.right <= 390));
+
+    const headerBox = await page.locator('.top').boundingBox();
+    assert.ok(headerBox);
+    assert.equal(
+      await page.locator('.top').evaluate((header) => getComputedStyle(header).position),
+      'relative',
+    );
+    assert.equal(
+      photoLayout.some((photo) =>
+        Math.min(headerBox.y + headerBox.height, photo.bottom) -
+          Math.max(headerBox.y, photo.top) > 0,
+      ),
+      false,
+    );
+
     const width = await page.evaluate(() => ({
       clientWidth: document.documentElement.clientWidth,
       scrollWidth: document.documentElement.scrollWidth,

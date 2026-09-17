@@ -1,5 +1,5 @@
 export const festivalStats = [
-  { value: '5,000', label: 'Attendees' },
+  { value: '5,500', label: 'Attendees' },
   { value: '31', label: 'Days' },
   { value: '37', label: 'Events' },
   { value: '9', label: 'Installations' },
