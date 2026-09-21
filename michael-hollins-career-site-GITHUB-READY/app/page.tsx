@@ -3,7 +3,6 @@ import { cvSourceGroups } from '../data/cvSources';
 import { festivalLinks, festivalStats } from '../data/commonSenses';
 import HeroMotion from './HeroMotion';
 import LazyLoopVideo from './LazyLoopVideo';
-import NewsClipPreview from './NewsClipPreview';
 import YouTubePreview from './YouTubePreview';
 import {
   iexcelVisuals,
@@ -37,7 +36,7 @@ function VisualFigure({v, className=''}:{v:VisualRecord;className?:string;key?:s
   const isWaterLoop = v.id === 'water-2016';
   return <figure className={className}>
     {isWaterLoop
-      ? <LazyLoopVideo src="/media/kaneko_water_loop.mp4" poster={v.src} className="archiveLoopVideo"/>
+      ? <LazyLoopVideo src="/media/kaneko_water_loop.mp4" poster={v.src} label="KANEKO WATER" className="archiveLoopVideo"/>
       : <img src={v.src} alt={v.alt}/>}
     <figcaption>
       {v.year && <span className="yearPill">{v.year}</span>}
@@ -72,15 +71,17 @@ export default function Home(){
     <a className="featureCard" href="#research"><span>2026–present</span><h3>Nebraska Center for 3D Innovation</h3><p>Principal investigator on NSF Award No. 2546319 supporting an $8 million statewide E-RISE initiative.</p><strong>Explore research →</strong></a>
     <a className="featureCard" href="#latest-coverage"><span>2023–present</span><h3>Statewide & rural health education</h3><p>Holography, VR, connected 3D iWalls and multi-site production used to reduce geographic barriers across Nebraska.</p><strong>Watch the interview →</strong></a>
   </div>
-  {latestCoverage?.streamUrl && typeof latestCoverage.clipStart === 'number' && typeof latestCoverage.clipEnd === 'number' && <section id="latest-coverage" className="latestCoverage" aria-labelledby="latest-coverage-title">
+  {latestCoverage?.videoSrc && latestCoverage.poster && <section id="latest-coverage" className="latestCoverage" aria-labelledby="latest-coverage-title">
     <div className="latestCoverageVisual">
-      <NewsClipPreview streamUrl={latestCoverage.streamUrl} clipStart={latestCoverage.clipStart} clipEnd={latestCoverage.clipEnd} title={latestCoverage.title} sourceLabel={`${latestCoverage.outlet} · Published ${latestCoverage.publishedDate ?? latestCoverage.year}`}/>
+      <LazyLoopVideo src={latestCoverage.videoSrc} poster={latestCoverage.poster} label="Stroke Conference" className="strokeConferenceLoop"/>
+      <span className="strokeVideoCredit">{latestCoverage.outlet}<span className="strokeVideoCreditDate"> · Published {latestCoverage.publishedDate ?? latestCoverage.year}</span></span>
     </div>
     <div className="latestCoverageCopy">
+      <span className="strokeMobileSource">{latestCoverage.outlet} · Published {latestCoverage.publishedDate ?? latestCoverage.year}</span>
       <p className="latestCoverageKicker">Statewide Stroke Conference · {latestCoverage.eventDate ?? latestCoverage.year}</p>
       <h2 id="latest-coverage-title">Statewide stroke education, connected across Nebraska.</h2>
       <p>{latestCoverage.description}</p>
-      <p className="latestCoverageTimestamp">Michael Hollins interview excerpt · 0:15–0:38</p>
+      <p className="latestCoverageTimestamp">Michael Hollins interview excerpt · 0:16–0:38</p>
       <div className="latestCoverageActions"><a className="btn lime" href={latestCoverage.primaryUrl} target="_blank" rel="noreferrer">Watch the full NCN story ↗</a><a className="latestCoverageSecondary" href="#iexcel-visuals">Explore statewide work ↓</a></div>
     </div>
   </section>}
@@ -93,8 +94,8 @@ export default function Home(){
   </div>
 
   <div className="continuityProject">
-    <div className="continuityImage"><YouTubePreview videoId="MxTWU6CdMBw" poster="/media/whooper_highway_poster.jpg" title="The Whooper Highway — 1:55–2:35 excerpt" label="The Whooper Highway" duration="0:40" outlet="Cornell Lab of Ornithology" startSeconds={115} endSeconds={155} loop muted playLabel="video excerpt" buttonText="Play 40-second excerpt"/></div>
-    <div className="continuityCopy"><p className="eyebrow">Creative continuity · 2016 → 2026</p><h3>From WATER to Into Whooperland</h3><p>Hollins first worked with conservation photographer Michael Forsberg and Platte Basin Timelapse through KANEKO’s 2016 WATER season. A decade later, the relationship continues at UNMC, where Hollins is co-producing Forsberg’s <em>Into Whooperland</em> Healing Arts program with Forsberg and his studio for the Davis Global Center.</p><div className="continuityDates"><span><b>2016</b>KANEKO · WATER</span><i>→</i><span><b>2026</b>UNMC · Healing Arts</span></div><div className="projectLinks"><a href="https://kaneko.smugmug.com/Exhibitions/Water" target="_blank" rel="noreferrer">WATER archive ↗</a><a href="https://www.unmc.edu/newsroom/2026/09/15/forsberg-event-captured-majesty-of-sandhill-and-whooping-cranes/" target="_blank" rel="noreferrer">UNMC event coverage ↗</a><a href="https://www.youtube.com/watch?v=MxTWU6CdMBw" target="_blank" rel="noreferrer">The Whooper Highway video ↗</a><a href="https://www.unmc.edu/newsroom/2026/08/10/michael-forsberg-to-give-artists-talk-at-unmc/" target="_blank" rel="noreferrer">UNMC: Into Whooperland ↗</a><a href="https://www.michaelforsberg.com/presentations/2026/8/2/260908" target="_blank" rel="noreferrer">Michael Forsberg ↗</a><a href="https://plattebasintimelapse.com/" target="_blank" rel="noreferrer">Platte Basin Timelapse ↗</a></div></div>
+    <div className="continuityImage"><LazyLoopVideo src="/media/forsberg_whooperland_loop.mp4" poster="/media/forsberg_whooperland_poster.jpg" label="Whooperland" className="whooperlandLoop"/><span className="continuityVideoBadge">1:55–2:35 excerpt</span></div>
+    <div className="continuityCopy"><p className="eyebrow">Creative continuity · 2016 → 2026</p><h3>From WATER to Into Whooperland</h3><p>Hollins first worked with conservation photographer Michael Forsberg and Platte Basin Timelapse through KANEKO’s 2016 WATER season. A decade later, the relationship continues at UNMC, where Hollins is co-producing Forsberg’s <em>Into Whooperland</em> Healing Arts program with Forsberg and his studio for the Davis Global Center.</p><div className="continuityDates"><span><b>2016</b>KANEKO · WATER</span><i>→</i><span><b>2026</b>UNMC · Healing Arts</span></div><div className="projectLinks"><a href="https://kaneko.smugmug.com/Exhibitions/Water" target="_blank" rel="noreferrer">WATER archive ↗</a><a href="https://www.unmc.edu/newsroom/2026/09/15/forsberg-event-captured-majesty-of-sandhill-and-whooping-cranes/" target="_blank" rel="noreferrer">UNMC event coverage ↗</a><a href="https://www.youtube.com/watch?v=T4aAYcF5xjo" target="_blank" rel="noreferrer">iEXCEL Moments: Into Whooperland video ↗</a><a href="https://www.unmc.edu/newsroom/2026/08/10/michael-forsberg-to-give-artists-talk-at-unmc/" target="_blank" rel="noreferrer">UNMC: Into Whooperland ↗</a><a href="https://www.michaelforsberg.com/presentations/2026/8/2/260908" target="_blank" rel="noreferrer">Michael Forsberg ↗</a><a href="https://plattebasintimelapse.com/" target="_blank" rel="noreferrer">Platte Basin Timelapse ↗</a></div></div>
   </div>
   <div className="evidenceRail">
     <div><p className="eyebrow">Selected institutional evidence</p><h3>Documenting iEXCEL's growth, statewide reach and technology translation.</h3></div>

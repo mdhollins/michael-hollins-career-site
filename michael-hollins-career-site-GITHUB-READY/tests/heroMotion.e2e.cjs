@@ -587,8 +587,9 @@ describe('homepage copy refresh', () => {
 describe('September 2026 media and copy refresh', () => {
   const ncnStoryUrl = 'https://central.newschannelnebraska.com/story/364065246/unmc-uses-immersive-technology-to-expand-stroke-education-statewide';
   const unmcWhooperlandUrl = 'https://www.unmc.edu/newsroom/2026/09/15/forsberg-event-captured-majesty-of-sandhill-and-whooping-cranes/';
+  const whooperlandVideoUrl = 'https://www.youtube.com/watch?v=T4aAYcF5xjo';
 
-  test('expands the statewide work card into a featured interview directly below the selected work grid', async () => {
+  test('shows a compact autoplaying stroke interview directly below the selected work grid', async () => {
     const { context, page } = await openPage();
     const hero = page.locator('.hero');
     const latest = page.locator('#latest-coverage');
@@ -616,39 +617,64 @@ describe('September 2026 media and copy refresh', () => {
       ncnStoryUrl,
     );
 
-    const clip = latest.locator('video.newsClipVideo');
+    const clip = latest.locator('video.strokeConferenceLoop');
+    await clip.scrollIntoViewIfNeeded();
+    await clip.locator('source').waitFor({ state: 'attached' });
     assert.deepEqual(
       await clip.evaluate((video) => ({
-        end: video.getAttribute('data-clip-end'),
+        autoplay: video.autoplay,
+        loop: video.loop,
+        muted: video.muted,
+        playsInline: video.playsInline,
+        poster: video.getAttribute('poster'),
         preload: video.getAttribute('preload'),
-        src: video.getAttribute('data-stream-src'),
-        start: video.getAttribute('data-clip-start'),
+        source: video.querySelector('source')?.getAttribute('src'),
       })),
       {
-        end: '38',
+        autoplay: true,
+        loop: true,
+        muted: true,
+        playsInline: true,
+        poster: '/media/stroke_conference_poster.jpg',
         preload: 'none',
-        src: 'https://ncn.vod.immergo.tv/ncn/transcoded/ee63d0f2-4426-4b6c-bf84-5904a6c33496/hls/master.m3u8',
-        start: '15',
+        source: '/media/stroke_conference_loop.mp4',
       },
     );
-    assert.equal(
-      await latest.getByRole('button', { name: 'Play the 23-second News Channel Nebraska interview excerpt' }).count(),
-      1,
-    );
+    assert.equal(await latest.getByRole('button', { name: /Turn sound on/i }).count(), 0);
+    const box = await latest.boundingBox();
+    assert.ok(box);
+    assert.ok(box.height <= 390, `desktop feature remains too tall: ${box.height}px`);
     assert.equal(
       await latest.locator('.latestCoverageKicker').innerText(),
       'STATEWIDE STROKE CONFERENCE · SEPTEMBER 18, 2026',
     );
     assert.equal(
-      await latest.locator('.newsClipSourceLabel').innerText(),
-      'NEWS CHANNEL NEBRASKA · PUBLISHED SEPTEMBER 19, 2026',
+      await latest.locator('.strokeVideoCredit').innerText(),
+      'News Channel Nebraska · Published September 19, 2026',
     );
-    assert.match(await latest.innerText(), /Michael Hollins interview excerpt · 0:15–0:38/);
+    assert.match(await latest.innerText(), /Michael Hollins interview excerpt · 0:16–0:38/);
+    await page.waitForFunction(() => {
+      const video = document.querySelector('#latest-coverage video');
+      return video && Number.isFinite(video.duration);
+    });
+    const duration = await clip.evaluate((video) => video.duration);
+    assert.ok(duration > 21 && duration < 23, `unexpected stroke clip duration: ${duration}s`);
+    await page.waitForFunction(() => {
+      const video = document.querySelector('#latest-coverage video');
+      return video && !video.paused && video.currentTime > 0.2;
+    });
+    await latest.getByRole('button', { name: 'Pause Stroke Conference video' }).click();
+    assert.equal(await clip.evaluate((video) => video.paused), true);
+    await latest.getByRole('button', { name: 'Play Stroke Conference video' }).click();
+    await page.waitForFunction(() => {
+      const video = document.querySelector('#latest-coverage video');
+      return video && !video.paused;
+    });
 
     await context.close();
   });
 
-  test('uses the 1:55–2:35 Whooper Highway excerpt and adds current UNMC coverage', async () => {
+  test('uses the supplied 1:55–2:35 Whooperland clip as a lazy autoplay loop', async () => {
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto(baseUrl, { waitUntil: 'networkidle' });
@@ -658,25 +684,72 @@ describe('September 2026 media and copy refresh', () => {
       await continuity.getByRole('link', { name: 'UNMC event coverage ↗' }).getAttribute('href'),
       unmcWhooperlandUrl,
     );
-    const playButton = continuity.getByRole('button', {
-      name: 'Play video excerpt: The Whooper Highway, 0:40, Cornell Lab of Ornithology',
-    });
-    assert.equal(await playButton.count(), 1);
-    assert.match(
-      await playButton.locator('img').getAttribute('src'),
-      /whooper_highway_poster\.jpg/,
+    assert.equal(
+      await continuity.getByRole('link', { name: 'iEXCEL Moments: Into Whooperland video ↗' }).getAttribute('href'),
+      whooperlandVideoUrl,
     );
 
-    await playButton.press('Enter');
-    const player = continuity.locator('iframe');
-    await player.waitFor();
-    const playerUrl = new URL(await player.getAttribute('src'));
-    assert.equal(playerUrl.hostname, 'www.youtube-nocookie.com');
-    assert.equal(playerUrl.pathname, '/embed/MxTWU6CdMBw');
-    assert.equal(playerUrl.searchParams.get('start'), '115');
-    assert.equal(playerUrl.searchParams.get('end'), '155');
-    assert.equal(playerUrl.searchParams.get('loop'), '1');
-    assert.equal(playerUrl.searchParams.get('playlist'), 'MxTWU6CdMBw');
+    const video = continuity.locator('video.whooperlandLoop');
+    await video.scrollIntoViewIfNeeded();
+    await video.locator('source').waitFor({ state: 'attached' });
+    assert.deepEqual(
+      await video.evaluate((element) => ({
+        autoplay: element.autoplay,
+        loop: element.loop,
+        muted: element.muted,
+        playsInline: element.playsInline,
+        poster: element.getAttribute('poster'),
+        preload: element.getAttribute('preload'),
+        source: element.querySelector('source')?.getAttribute('src'),
+      })),
+      {
+        autoplay: true,
+        loop: true,
+        muted: true,
+        playsInline: true,
+        poster: '/media/forsberg_whooperland_poster.jpg',
+        preload: 'none',
+        source: '/media/forsberg_whooperland_loop.mp4',
+      },
+    );
+    assert.equal(await continuity.locator('iframe').count(), 0);
+    await page.waitForFunction(() => {
+      const video = document.querySelector('.continuityProject video');
+      return video && !video.paused && video.currentTime > 0.2;
+    });
+    await continuity.getByRole('button', { name: 'Pause Whooperland video' }).click();
+    assert.equal(await video.evaluate((element) => element.paused), true);
+    await continuity.getByRole('button', { name: 'Play Whooperland video' }).click();
+    await page.waitForFunction(() => {
+      const video = document.querySelector('.continuityProject video');
+      return video && !video.paused;
+    });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForFunction(() => {
+      const video = document.querySelector('.continuityProject video');
+      return video && video.paused;
+    });
+
+    await context.close();
+  });
+
+  test('keeps the new loops still under reduced motion until a visitor chooses to play', async () => {
+    const context = await browser.newContext({ reducedMotion: 'reduce' });
+    const page = await context.newPage();
+    await page.goto(baseUrl, { waitUntil: 'networkidle' });
+
+    const continuity = page.locator('.continuityProject');
+    await continuity.scrollIntoViewIfNeeded();
+    const video = continuity.locator('video.whooperlandLoop');
+    assert.equal(await video.locator('source').count(), 0);
+    assert.equal(await video.evaluate((element) => element.paused), true);
+
+    await continuity.getByRole('button', { name: 'Play Whooperland video' }).click();
+    await video.locator('source').waitFor({ state: 'attached' });
+    await page.waitForFunction(() => {
+      const element = document.querySelector('.continuityProject video');
+      return element && !element.paused && element.currentTime > 0.2;
+    });
 
     await context.close();
   });
@@ -715,6 +788,10 @@ describe('September 2026 media and copy refresh', () => {
       1,
     );
     assert.equal(
+      await page.locator(`.sourceGrid a[href="${whooperlandVideoUrl}"]`).count(),
+      1,
+    );
+    assert.equal(
       await page.locator(`#media .relatedMedia a[href="${ncnStoryUrl}"]`).count(),
       1,
     );
@@ -726,16 +803,25 @@ describe('September 2026 media and copy refresh', () => {
     const { context, page } = await openPage({ viewport: { height: 844, width: 390 } });
     const latest = page.locator('#latest-coverage');
     await latest.scrollIntoViewIfNeeded();
+    assert.equal(
+      await latest.locator('.strokeMobileSource').innerText(),
+      'News Channel Nebraska · Published September 19, 2026',
+    );
+    assert.equal(await latest.locator('.strokeMobileSource').isVisible(), true);
     const box = await latest.boundingBox();
     assert.ok(box);
     assert.ok(box.x >= 0);
     assert.ok(box.x + box.width <= 390);
+    assert.ok(box.height <= 680, `mobile feature remains too tall: ${box.height}px`);
 
     const width = await page.evaluate(() => ({
       clientWidth: document.documentElement.clientWidth,
       scrollWidth: document.documentElement.scrollWidth,
     }));
     assert.ok(width.scrollWidth <= width.clientWidth);
+    const whooperlandFrame = await page.locator('.continuityImage').boundingBox();
+    assert.ok(whooperlandFrame);
+    assert.ok(whooperlandFrame.width / whooperlandFrame.height > 1.6);
 
     await context.close();
   });
