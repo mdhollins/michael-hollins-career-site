@@ -2,3 +2,4 @@
 .playwright-browsers/
 .pnpm-store/
 node_modules/
+*.tsbuildinfo

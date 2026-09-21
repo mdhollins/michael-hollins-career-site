@@ -7,10 +7,11 @@
     "build": "next build",
     "vercel-build": "next build",
     "start": "next start",
-    "test": "node --no-warnings --experimental-strip-types --test tests/heroMotionPlayback.test.mjs",
+    "test": "node --no-warnings --experimental-strip-types --test tests/*.test.mjs",
     "test:e2e": "node --test tests/heroMotion.e2e.cjs"
   },
   "dependencies": {
+    "hls.js": "^1.7.3",
     "next": "^15.5.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"

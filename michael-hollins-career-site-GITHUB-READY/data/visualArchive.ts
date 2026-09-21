@@ -131,8 +131,8 @@ export const kanekoExhibitions: VisualRecord[] = [
     year: '2018',
     title: 'Light',
     subtitle: 'Exhibition and programming season',
-    src: '/media/kaneko_light_triph_2018.webp',
-    alt: 'TRIPH by Circus Family in the Light exhibition at KANEKO in 2018',
+    src: '/media/kaneko_light_installation_2018.webp',
+    alt: 'Wide installation view of the Light exhibition at KANEKO in 2018',
     galleryUrl: 'https://kaneko.smugmug.com/Exhibitions/Light',
   },
   {
@@ -168,10 +168,6 @@ export const kanekoEducation: VisualRecord[] = [
     src: '/media/kaneko_storytelling_context_2016.webp', alt: 'Michael Hollins speaking with students during the Storytelling exhibition at KANEKO in 2016',
   },
   {
-    id: 'storytelling-teaching-2016', year: '2016', title: 'Storytelling', subtitle: 'Gallery teaching and interpretation',
-    src: '/media/kaneko_storytelling_teaching_2016.webp', alt: 'Michael Hollins and students pointing to exhibition material during Storytelling at KANEKO in 2016',
-  },
-  {
     id: 'storytelling-group-2016', year: '2016', title: 'Storytelling', subtitle: 'Facilitating discussion with a student group',
     src: '/media/kaneko_storytelling_group_2016.webp', alt: 'Michael Hollins facilitating a student discussion during Storytelling at KANEKO in 2016',
   },
@@ -201,10 +197,6 @@ export const kanekoLeadership: VisualRecord[] = [
 ];
 
 export const kanekoLight2018: VisualRecord[] = [
-  {
-    id: 'light-wide', year: '2018', title: 'Light', subtitle: 'Installation view',
-    src: '/media/kaneko_light_installation_2018.webp', alt: 'Wide installation view of the Light exhibition at KANEKO in 2018',
-  },
   {
     id: 'light-adam-belt', year: '2018', title: 'Adam Belt', subtitle: 'Light exhibition',
     src: '/media/kaneko_light_adam_belt_2018.webp', alt: 'Visitor examining an illuminated work by Adam Belt in the Light exhibition at KANEKO in 2018',

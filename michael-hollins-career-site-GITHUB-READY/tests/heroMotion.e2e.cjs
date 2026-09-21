@@ -78,6 +78,10 @@ describe('hero motion', () => {
         name: 'Explorer. Creator. Connector.',
       }).waitFor(),
     );
+    assert.equal(
+      await page.locator('.hero .photoTag').innerText(),
+      'Michael Hollins · UNMC Davis Global Center · 2020',
+    );
 
     await context.close();
   });
@@ -280,7 +284,7 @@ describe('homepage copy refresh', () => {
         .filter({ has: page.locator('img[src="/media/kaneko_passion.webp"]') })
         .locator('figcaption b')
         .innerText(),
-      'Passion & Obsession',
+      'Jun Kaneko',
     );
 
     await context.close();
@@ -304,6 +308,82 @@ describe('homepage copy refresh', () => {
       Array(10).fill('Exhibition and programming season'),
     );
     assert.equal(await archive.getByText('Gallery learning', { exact: true }).count(), 0);
+
+    await context.close();
+  });
+
+  test('shows the strongest Light installation once and removes the repeated Storytelling teaching image', async () => {
+    const { context, page } = await openPage();
+
+    const lightSeason = page.locator('.exhibitionTimeline figure').filter({
+      has: page.getByText('Light', { exact: true }),
+    });
+    assert.equal(
+      await lightSeason.locator('img').getAttribute('src'),
+      '/media/kaneko_light_installation_2018.webp',
+    );
+    assert.equal(
+      await page.locator('img[src="/media/kaneko_light_installation_2018.webp"]').count(),
+      1,
+    );
+    assert.equal(
+      await page.locator('.immersiveGrid img[src="/media/kaneko_light_installation_2018.webp"]').count(),
+      0,
+    );
+    assert.equal(
+      await page.locator('.educationGrid img[src="/media/kaneko_storytelling_teaching_2016.webp"]').count(),
+      0,
+    );
+    assert.deepEqual(
+      await page.locator('.immersiveGrid figure.immersiveWide img').evaluateAll(
+        (images) => images.map((image) => image.getAttribute('src')),
+      ),
+      [
+        '/media/kaneko_light_refik_anadol_2018.webp',
+        '/media/kaneko_light_blumen_lumen_2018.webp',
+      ],
+    );
+    assert.deepEqual(
+      await page.locator('.educationGrid figure.educationWide img').evaluateAll(
+        (images) => images.map((image) => image.getAttribute('src')),
+      ),
+      [
+        '/media/kaneko_storytelling_group_2016.webp',
+        '/media/kaneko_passion_whyarts_2016.webp',
+      ],
+    );
+
+    await context.close();
+  });
+
+  test('uses consistent visible chapter labels and the full Common Senses navigation title', async () => {
+    const { context, page } = await openPage();
+
+    assert.equal(
+      await page.locator('.top nav a[href="#common-senses"]').innerText(),
+      'Common Senses',
+    );
+    assert.equal(
+      await page.locator('#kaneko .chapterLabel').first().innerText(),
+      'KANEKO · 2013–2018',
+    );
+    assert.equal(
+      await page.locator('#pace .chapterLabel').first().innerText(),
+      'Pottawattamie Arts, Culture & Entertainment (PACE) · 2018–2019',
+    );
+    assert.equal(
+      await page.locator('#research .chapterLabel').first().innerText(),
+      'Research & scholarship',
+    );
+    assert.equal(
+      await page.locator('#iexcel-visuals .chapterLabel').first().innerText(),
+      'UNMC iEXCEL · 2019–current',
+    );
+    assert.ok(
+      await page.locator('#pace .chapterLabel').first().evaluate(
+        (element) => Number.parseFloat(getComputedStyle(element).fontSize) >= 16,
+      ),
+    );
 
     await context.close();
   });
@@ -500,6 +580,155 @@ describe('homepage copy refresh', () => {
       scrollWidth: document.documentElement.scrollWidth,
     }));
     assert.ok(width.scrollWidth <= width.clientWidth);
+    await context.close();
+  });
+});
+
+describe('September 2026 media and copy refresh', () => {
+  const ncnStoryUrl = 'https://central.newschannelnebraska.com/story/364065246/unmc-uses-immersive-technology-to-expand-stroke-education-statewide';
+  const unmcWhooperlandUrl = 'https://www.unmc.edu/newsroom/2026/09/15/forsberg-event-captured-majesty-of-sandhill-and-whooping-cranes/';
+
+  test('expands the statewide work card into a featured interview directly below the selected work grid', async () => {
+    const { context, page } = await openPage();
+    const hero = page.locator('.hero');
+    const latest = page.locator('#latest-coverage');
+
+    assert.equal(
+      await hero.locator('.lead').innerText(),
+      'Nebraska-grown interdisciplinary executive, faculty member and scholar-practitioner building connections across creative leadership, emerging technology, health professions education, research, business development and community impact.',
+    );
+    assert.equal(await page.getByText('Omaha-grown', { exact: false }).count(), 0);
+    assert.equal(
+      await latest.evaluate((section) => section.previousElementSibling?.classList.contains('featureGrid')),
+      true,
+    );
+    const statewideCard = page.locator('.featureCard').filter({
+      hasText: 'Statewide & rural health education',
+    });
+    assert.equal(await statewideCard.getAttribute('href'), '#latest-coverage');
+    assert.equal(await statewideCard.locator('strong').innerText(), 'Watch the interview →');
+    assert.equal(
+      await latest.getByRole('heading', { level: 2 }).innerText(),
+      'Statewide stroke education, connected across Nebraska.',
+    );
+    assert.equal(
+      await latest.getByRole('link', { name: 'Watch the full NCN story ↗' }).getAttribute('href'),
+      ncnStoryUrl,
+    );
+
+    const clip = latest.locator('video.newsClipVideo');
+    assert.deepEqual(
+      await clip.evaluate((video) => ({
+        end: video.getAttribute('data-clip-end'),
+        preload: video.getAttribute('preload'),
+        src: video.getAttribute('data-stream-src'),
+        start: video.getAttribute('data-clip-start'),
+      })),
+      {
+        end: '38',
+        preload: 'none',
+        src: 'https://ncn.vod.immergo.tv/ncn/transcoded/ee63d0f2-4426-4b6c-bf84-5904a6c33496/hls/master.m3u8',
+        start: '15',
+      },
+    );
+    assert.equal(
+      await latest.getByRole('button', { name: 'Play the 23-second News Channel Nebraska interview excerpt' }).count(),
+      1,
+    );
+    assert.match(await latest.innerText(), /Michael Hollins interview excerpt · 0:15–0:38/);
+
+    await context.close();
+  });
+
+  test('uses the 1:55–2:35 Whooper Highway excerpt and adds current UNMC coverage', async () => {
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.goto(baseUrl, { waitUntil: 'networkidle' });
+    const continuity = page.locator('.continuityProject');
+
+    assert.equal(
+      await continuity.getByRole('link', { name: 'UNMC event coverage ↗' }).getAttribute('href'),
+      unmcWhooperlandUrl,
+    );
+    const playButton = continuity.getByRole('button', {
+      name: 'Play video excerpt: The Whooper Highway, 0:40, Cornell Lab of Ornithology',
+    });
+    assert.equal(await playButton.count(), 1);
+    assert.match(
+      await playButton.locator('img').getAttribute('src'),
+      /whooper_highway_poster\.jpg/,
+    );
+
+    await playButton.press('Enter');
+    const player = continuity.locator('iframe');
+    await player.waitFor();
+    const playerUrl = new URL(await player.getAttribute('src'));
+    assert.equal(playerUrl.hostname, 'www.youtube-nocookie.com');
+    assert.equal(playerUrl.pathname, '/embed/MxTWU6CdMBw');
+    assert.equal(playerUrl.searchParams.get('start'), '115');
+    assert.equal(playerUrl.searchParams.get('end'), '155');
+    assert.equal(playerUrl.searchParams.get('loop'), '1');
+    assert.equal(playerUrl.searchParams.get('playlist'), 'MxTWU6CdMBw');
+
+    await context.close();
+  });
+
+  test('updates the requested LVK and KANEKO language without changing their supporting context', async () => {
+    const { context, page } = await openPage();
+    const lvkCopy = await page.locator('#healing-arts .projectSpotlightCopy').innerText();
+    assert.doesNotMatch(lvkCopy, /\bpain\b/i);
+    assert.match(lvkCopy, /art, medicine, technology and healing/);
+
+    const card = page.locator('.mosaic figure').filter({
+      has: page.locator('img[src="/media/kaneko_passion.webp"]'),
+    });
+    assert.equal(await card.locator('figcaption b').innerText(), 'Jun Kaneko');
+    assert.equal(
+      await card.locator('figcaption > span:not(.yearPill)').innerText(),
+      'Connecting students with exhibition ideas',
+    );
+
+    await context.close();
+  });
+
+  test('adds both new reports to the visible evidence and source archives', async () => {
+    const { context, page } = await openPage();
+
+    assert.equal(
+      await page.locator(`.evidenceLinks a[href="${ncnStoryUrl}"]`).count(),
+      1,
+    );
+    assert.equal(
+      await page.locator(`.sourceGrid a[href="${ncnStoryUrl}"]`).count(),
+      1,
+    );
+    assert.equal(
+      await page.locator(`.sourceGrid a[href="${unmcWhooperlandUrl}"]`).count(),
+      1,
+    );
+    assert.equal(
+      await page.locator(`#media .relatedMedia a[href="${ncnStoryUrl}"]`).count(),
+      1,
+    );
+
+    await context.close();
+  });
+
+  test('keeps the new top coverage feature inside the mobile viewport', async () => {
+    const { context, page } = await openPage({ viewport: { height: 844, width: 390 } });
+    const latest = page.locator('#latest-coverage');
+    await latest.scrollIntoViewIfNeeded();
+    const box = await latest.boundingBox();
+    assert.ok(box);
+    assert.ok(box.x >= 0);
+    assert.ok(box.x + box.width <= 390);
+
+    const width = await page.evaluate(() => ({
+      clientWidth: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+    }));
+    assert.ok(width.scrollWidth <= width.clientWidth);
+
     await context.close();
   });
 });

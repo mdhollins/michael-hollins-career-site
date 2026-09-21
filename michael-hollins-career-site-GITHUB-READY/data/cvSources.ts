@@ -3,6 +3,7 @@ export type CvSourceGroup = { title:string; kicker:string; items:CvSource[] };
 
 export const cvSourceGroups:CvSourceGroup[] = [
   {title:'UNMC, iEXCEL & statewide impact',kicker:'Current work',items:[
+    {year:'2026',label:'UNMC uses immersive technology to expand stroke education statewide',publisher:'News Channel Nebraska',url:'https://central.newschannelnebraska.com/story/364065246/unmc-uses-immersive-technology-to-expand-stroke-education-statewide'},
     {year:'2026',label:'iEXCEL rated as exceptional',publisher:'UNMC',url:'https://www.unmc.edu/newsroom/2026/03/27/unmcs-iexcel-program-rated-as-exceptional/'},
     {year:'2025',label:'iEXCEL 2.0: New Phase of Growth',publisher:'UNMC',url:'https://www.unmc.edu/newsroom/2025/05/20/iexcel-moves-into-new-phase-of-growth-iexcel-2-0/'},
     {type:'Program',label:'iEXCEL Research Portfolio',publisher:'UNMC',url:'https://www.unmc.edu/iexcel/research/research-portfolio.html'},
@@ -41,6 +42,8 @@ export const cvSourceGroups:CvSourceGroup[] = [
     {type:'Profile',label:'OMA x AI speaker profile',publisher:'UNO',url:'https://www.unomaha.edu/omaxai/speakers/past-speakers/michael-hollins.php'},
   ]},
   {title:'Media, arts & public-facing work',kicker:'Coverage & interviews',items:[
+    {year:'2026',label:'Forsberg event captured majesty of whooping cranes',publisher:'UNMC',url:'https://www.unmc.edu/newsroom/2026/09/15/forsberg-event-captured-majesty-of-sandhill-and-whooping-cranes/'},
+    {year:'2026',label:'The Whooper Highway',publisher:'Cornell Lab of Ornithology',url:'https://www.youtube.com/watch?v=MxTWU6CdMBw'},
     {year:'2026',label:'Simulating The Human Body',publisher:'The Futurists',url:'https://www.thefuturists.com/episodes/simulating-the-human-body'},
     {year:'2019',label:'iEXCEL interview with Michael Hollins',publisher:'KIOS Omaha Public Radio',url:'https://www.kios.org/live-and-local/2019-11-06/iexcel-program-offers-cutting-edge-technology-to-augment-learning-michael-hollins-explains-on-kios'},
     {year:'2016',label:'KANEKO Storytelling interview',publisher:'KIOS Omaha Public Radio',url:'https://www.kios.org/arts/2016-07-25/newspaper-vs-television-at-kaneko'},
