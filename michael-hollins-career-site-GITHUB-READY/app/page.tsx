@@ -74,10 +74,10 @@ export default function Home(){
   </div>
   {latestCoverage?.streamUrl && typeof latestCoverage.clipStart === 'number' && typeof latestCoverage.clipEnd === 'number' && <section id="latest-coverage" className="latestCoverage" aria-labelledby="latest-coverage-title">
     <div className="latestCoverageVisual">
-      <NewsClipPreview streamUrl={latestCoverage.streamUrl} clipStart={latestCoverage.clipStart} clipEnd={latestCoverage.clipEnd} title={latestCoverage.title}/>
+      <NewsClipPreview streamUrl={latestCoverage.streamUrl} clipStart={latestCoverage.clipStart} clipEnd={latestCoverage.clipEnd} title={latestCoverage.title} sourceLabel={`${latestCoverage.outlet} · Published ${latestCoverage.publishedDate ?? latestCoverage.year}`}/>
     </div>
     <div className="latestCoverageCopy">
-      <p className="latestCoverageKicker">Latest coverage · September 18, 2026</p>
+      <p className="latestCoverageKicker">Statewide Stroke Conference · {latestCoverage.eventDate ?? latestCoverage.year}</p>
       <h2 id="latest-coverage-title">Statewide stroke education, connected across Nebraska.</h2>
       <p>{latestCoverage.description}</p>
       <p className="latestCoverageTimestamp">Michael Hollins interview excerpt · 0:15–0:38</p>

@@ -13,6 +13,8 @@ export type MediaRecord = {
   streamUrl?: string;
   clipStart?: number;
   clipEnd?: number;
+  eventDate?: string;
+  publishedDate?: string;
   youtubeId?: string;
   poster?: string;
   relatedUrl?: string;
@@ -39,6 +41,8 @@ export const media: MediaRecord[] = [
       'https://ncn.vod.immergo.tv/ncn/transcoded/ee63d0f2-4426-4b6c-bf84-5904a6c33496/hls/master.m3u8',
     clipStart: 15,
     clipEnd: 38,
+    eventDate: 'September 18, 2026',
+    publishedDate: 'September 19, 2026',
     tags: ['Statewide Education', 'Stroke Education', 'Immersive Technology', 'UNMC'],
   },
   {

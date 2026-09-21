@@ -503,19 +503,23 @@
   content: "STATEWIDE\A STROKE\A EDUCATION";
 }
 
-.newsClipPreview[data-state="idle"]::after,
-.newsClipPreview[data-state="loading"]::after {
+.newsClipSourceLabel {
   position: absolute;
   right: 38px;
   bottom: 30px;
   left: 40px;
   z-index: 1;
+  display: none;
   color: #bcd5e2;
   font-size: .68rem;
   font-weight: 900;
   letter-spacing: .13em;
   text-transform: uppercase;
-  content: "News Channel Nebraska · September 18, 2026";
+}
+
+.newsClipPreview[data-state="idle"] .newsClipSourceLabel,
+.newsClipPreview[data-state="loading"] .newsClipSourceLabel {
+  display: block;
 }
 
 .newsClipVideo {
@@ -605,6 +609,23 @@
   font-weight: 900;
   background: rgba(2, 12, 24, .78);
   cursor: pointer;
+}
+
+.newsClipPausedStatus {
+  position: absolute;
+  right: 18px;
+  bottom: 61px;
+  left: 18px;
+  z-index: 5;
+  width: fit-content;
+  max-width: min(430px, calc(100% - 36px));
+  margin: 0;
+  padding: 8px 11px;
+  border-radius: 8px;
+  color: white;
+  font-size: .72rem;
+  font-weight: 750;
+  background: rgba(2, 12, 24, .82);
 }
 
 .newsClipFallback {
@@ -746,8 +767,7 @@
     font-size: clamp(2rem, 12vw, 3rem);
   }
 
-  .newsClipPreview[data-state="idle"]::after,
-  .newsClipPreview[data-state="loading"]::after {
+  .newsClipSourceLabel {
     right: 20px;
     bottom: 15px;
     left: 21px;

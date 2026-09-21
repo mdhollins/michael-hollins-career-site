@@ -635,6 +635,14 @@ describe('September 2026 media and copy refresh', () => {
       await latest.getByRole('button', { name: 'Play the 23-second News Channel Nebraska interview excerpt' }).count(),
       1,
     );
+    assert.equal(
+      await latest.locator('.latestCoverageKicker').innerText(),
+      'STATEWIDE STROKE CONFERENCE · SEPTEMBER 18, 2026',
+    );
+    assert.equal(
+      await latest.locator('.newsClipSourceLabel').innerText(),
+      'NEWS CHANNEL NEBRASKA · PUBLISHED SEPTEMBER 19, 2026',
+    );
     assert.match(await latest.innerText(), /Michael Hollins interview excerpt · 0:15–0:38/);
 
     await context.close();

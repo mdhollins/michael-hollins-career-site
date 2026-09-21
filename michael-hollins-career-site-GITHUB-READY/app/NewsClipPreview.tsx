@@ -2,13 +2,17 @@
 
 import type Hls from 'hls.js';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { clampTimedClipPosition } from './timedClipPlayback';
+import {
+  clampTimedClipPosition,
+  millisecondsUntilClipBoundary,
+} from './timedClipPlayback';
 
 type NewsClipPreviewProps = {
   streamUrl: string;
   clipStart?: number;
   clipEnd?: number;
   title: string;
+  sourceLabel: string;
 };
 
 type PlaybackState = 'idle' | 'loading' | 'playing' | 'paused' | 'error';
@@ -21,13 +25,42 @@ export default function NewsClipPreview({
   clipStart = 15,
   clipEnd = 38,
   title,
+  sourceLabel,
 }: NewsClipPreviewProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const hlsRef = useRef<Hls | null>(null);
+  const boundaryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const loadAttemptRef = useRef(0);
   const shouldStartRef = useRef(false);
   const [playbackState, setPlaybackState] = useState<PlaybackState>('idle');
   const [statusMessage, setStatusMessage] = useState('');
+
+  const clearBoundaryTimer = useCallback(() => {
+    if (boundaryTimerRef.current === null) return;
+
+    clearTimeout(boundaryTimerRef.current);
+    boundaryTimerRef.current = null;
+  }, []);
+
+  const scheduleBoundaryTimer = useCallback(() => {
+    clearBoundaryTimer();
+
+    const video = videoRef.current;
+    if (!video || video.paused || video.readyState < 2) return;
+
+    const delay = millisecondsUntilClipBoundary(
+      video.currentTime,
+      clipEnd,
+      video.playbackRate,
+    );
+    boundaryTimerRef.current = setTimeout(() => {
+      boundaryTimerRef.current = null;
+      const activeVideo = videoRef.current;
+      if (!activeVideo || activeVideo.paused) return;
+
+      activeVideo.currentTime = clipStart;
+    }, delay);
+  }, [clearBoundaryTimer, clipEnd, clipStart]);
 
   const destroyHls = useCallback(() => {
     hlsRef.current?.destroy();
@@ -43,11 +76,12 @@ export default function NewsClipPreview({
       await video.play();
       setStatusMessage('');
       setPlaybackState('playing');
+      scheduleBoundaryTimer();
     } catch {
-      setStatusMessage('The excerpt is ready. Press replay to begin.');
+      setStatusMessage('The excerpt is ready. Press play to begin.');
       setPlaybackState('paused');
     }
-  }, [clipStart]);
+  }, [clipStart, scheduleBoundaryTimer]);
 
   const loadClip = useCallback(async () => {
     const video = videoRef.current;
@@ -105,6 +139,7 @@ export default function NewsClipPreview({
     return () => {
       loadAttemptRef.current += 1;
       shouldStartRef.current = false;
+      clearBoundaryTimer();
       destroyHls();
 
       const video = videoRef.current;
@@ -114,7 +149,25 @@ export default function NewsClipPreview({
         video.load();
       }
     };
-  }, [destroyHls]);
+  }, [clearBoundaryTimer, destroyHls]);
+
+  useEffect(() => {
+    if (playbackState !== 'playing') return;
+
+    const video = videoRef.current;
+    if (!video || typeof video.requestVideoFrameCallback !== 'function') return;
+
+    let frameRequest = 0;
+    const watchFrame = (_now: DOMHighResTimeStamp, metadata: VideoFrameCallbackMetadata) => {
+      if (metadata.mediaTime >= clipEnd - 0.045) {
+        video.currentTime = clipStart;
+      }
+      frameRequest = video.requestVideoFrameCallback(watchFrame);
+    };
+
+    frameRequest = video.requestVideoFrameCallback(watchFrame);
+    return () => video.cancelVideoFrameCallback(frameRequest);
+  }, [clipEnd, clipStart, playbackState]);
 
   const handleLoadedMetadata = () => {
     if (!shouldStartRef.current) return;
@@ -137,6 +190,7 @@ export default function NewsClipPreview({
     if (!video) return;
 
     if (playbackState === 'playing') {
+      clearBoundaryTimer();
       video.pause();
       return;
     }
@@ -155,6 +209,7 @@ export default function NewsClipPreview({
 
   return (
     <div className="newsClipPreview" data-state={playbackState} aria-busy={playbackState === 'loading'}>
+      <span className="newsClipSourceLabel">{sourceLabel}</span>
       <video
         ref={videoRef}
         className="newsClipVideo"
@@ -168,10 +223,17 @@ export default function NewsClipPreview({
         onLoadedMetadata={handleLoadedMetadata}
         onTimeUpdate={handleTimeUpdate}
         onError={handleMediaError}
-        onPlaying={() => setPlaybackState('playing')}
+        onPlaying={() => {
+          setPlaybackState('playing');
+          scheduleBoundaryTimer();
+        }}
         onPause={() => {
+          clearBoundaryTimer();
           if (playbackState === 'playing') setPlaybackState('paused');
         }}
+        onWaiting={clearBoundaryTimer}
+        onSeeked={scheduleBoundaryTimer}
+        onRateChange={scheduleBoundaryTimer}
         onEnded={() => void playFromBeginning()}
       />
 
@@ -192,14 +254,23 @@ export default function NewsClipPreview({
       ) : null}
 
       {playbackState === 'playing' || playbackState === 'paused' ? (
-        <button
-          className="newsClipControl"
-          type="button"
-          aria-label={playbackState === 'playing' ? 'Pause interview excerpt' : 'Replay interview excerpt'}
-          onClick={handlePlaybackToggle}
-        >
-          {playbackState === 'playing' ? 'Pause' : 'Replay'}
-        </button>
+        <>
+          {playbackState === 'paused' && statusMessage ? (
+            <p className="newsClipPausedStatus" role="status">{statusMessage}</p>
+          ) : null}
+          <button
+            className="newsClipControl"
+            type="button"
+            aria-label={playbackState === 'playing'
+              ? 'Pause interview excerpt'
+              : statusMessage
+                ? 'Play interview excerpt'
+                : 'Replay interview excerpt'}
+            onClick={handlePlaybackToggle}
+          >
+            {playbackState === 'playing' ? 'Pause' : statusMessage ? 'Play' : 'Replay'}
+          </button>
+        </>
       ) : null}
 
       {playbackState === 'error' ? (
