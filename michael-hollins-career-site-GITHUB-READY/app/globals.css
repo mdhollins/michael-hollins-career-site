@@ -456,22 +456,80 @@
 
 .latestCoverage {
   display: grid;
-  grid-template-columns: minmax(0, 1.18fr) minmax(340px, .82fr);
-  min-height: 500px;
-  margin-top: 18px;
+  grid-template-columns: minmax(0, 1.04fr) minmax(0, .96fr);
+  max-width: 1080px;
+  margin: 18px auto 0;
   overflow: hidden;
-  border-radius: 26px;
+  border-radius: 20px;
   color: white;
   background: var(--navy);
-  box-shadow: 0 28px 75px rgba(7, 27, 52, .18);
+  box-shadow: 0 20px 52px rgba(7, 27, 52, .15);
   scroll-margin-top: 94px;
 }
 
 .latestCoverageVisual {
+  position: relative;
   display: flex;
   min-width: 0;
-  min-height: 500px;
+  aspect-ratio: 16 / 9;
   background: #020c18;
+}
+
+.strokeConferenceLoop {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.loopVideoToggle {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 4;
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 255, 255, .45);
+  border-radius: 999px;
+  color: white;
+  background: rgba(2, 12, 24, .78);
+  font: inherit;
+  font-size: .68rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.loopVideoToggle:focus-visible {
+  outline: 3px solid var(--lime);
+  outline-offset: 3px;
+}
+
+.latestCoverageVisual .loopVideoToggle {
+  top: auto;
+  right: auto;
+  bottom: 14px;
+  left: 14px;
+}
+
+.strokeVideoCredit {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  max-width: calc(100% - 28px);
+  padding: 6px 9px;
+  border-radius: 999px;
+  color: white;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+  background: rgba(2, 12, 24, .72);
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 620px) {
+  .strokeVideoCredit {
+    display: none;
+  }
 }
 
 .newsClipPreview {
@@ -655,11 +713,26 @@
   min-width: 0;
   flex-direction: column;
   justify-content: center;
-  padding: 48px;
+  padding: 24px 27px;
+}
+
+.strokeMobileSource {
+  display: none;
+}
+
+@media (max-width: 620px) {
+  .strokeMobileSource {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--aqua);
+    font-size: .65rem;
+    font-weight: 800;
+    letter-spacing: .04em;
+  }
 }
 
 .latestCoverageKicker {
-  margin: 0 0 20px;
+  margin: 0 0 12px;
   color: var(--aqua);
   font-size: .68rem;
   font-weight: 950;
@@ -670,20 +743,20 @@
 .latestCoverageCopy h2 {
   margin: 0;
   color: white;
-  font-size: clamp(2.4rem, 4.2vw, 4.55rem);
-  line-height: .91;
-  letter-spacing: -.06em;
+  font-size: clamp(1.85rem, 2.7vw, 2.85rem);
+  line-height: 1.03;
+  letter-spacing: -.048em;
 }
 
 .latestCoverageCopy > p:not(.latestCoverageKicker):not(.latestCoverageTimestamp) {
-  margin: 24px 0 0;
+  margin: 13px 0 0;
   color: #bfd0dc;
-  font-size: .92rem;
+  font-size: .8rem;
 }
 
 .latestCoverageTimestamp {
-  margin: 24px 0 0;
-  padding-top: 18px;
+  margin: 13px 0 0;
+  padding-top: 11px;
   border-top: 1px solid rgba(255, 255, 255, .15);
   color: white;
   font-size: .72rem;
@@ -695,7 +768,7 @@
   align-items: center;
   gap: 17px;
   flex-wrap: wrap;
-  margin-top: 27px;
+  margin-top: 15px;
 }
 
 .latestCoverageSecondary {
@@ -707,6 +780,29 @@
 .continuityImage {
   position: relative;
   display: flex;
+}
+
+.whooperlandLoop {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.continuityVideoBadge {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 2;
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, .32);
+  border-radius: 999px;
+  color: white;
+  font-size: .67rem;
+  font-weight: 900;
+  letter-spacing: .05em;
+  background: rgba(3, 16, 31, .7);
+  backdrop-filter: blur(10px);
 }
 
 .continuityImage .youtubePreview {
@@ -727,7 +823,12 @@
   }
 
   .latestCoverageCopy {
-    padding: 40px;
+    padding: 26px;
+  }
+
+  .continuityImage {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
   }
 
   .continuityImage .youtubePreview {
@@ -748,11 +849,11 @@
   }
 
   .latestCoverageCopy {
-    padding: 29px 22px 32px;
+    padding: 23px 21px 26px;
   }
 
   .latestCoverageCopy h2 {
-    font-size: clamp(2.35rem, 12.5vw, 3.4rem);
+    font-size: clamp(1.95rem, 8.8vw, 2.65rem);
   }
 
   .latestCoverageActions {

@@ -11,6 +11,7 @@ export type MediaRecord = {
   featured?: boolean;
   latest?: boolean;
   streamUrl?: string;
+  videoSrc?: string;
   clipStart?: number;
   clipEnd?: number;
   eventDate?: string;
@@ -32,14 +33,16 @@ export const media: MediaRecord[] = [
     title: 'UNMC uses immersive technology to expand stroke education statewide',
     outlet: 'News Channel Nebraska',
     description:
-      'News Channel Nebraska interviews Michael Hollins during the DHHS Statewide Stroke Conference about using holograms, virtual reality, interactive walls and 3D tools to connect health professionals and students across Nebraska.',
+      'At the DHHS Statewide Stroke Conference, Hollins discussed how holograms, VR and interactive walls connect health professionals and students across Nebraska.',
     primaryUrl:
       'https://central.newschannelnebraska.com/story/364065246/unmc-uses-immersive-technology-to-expand-stroke-education-statewide',
-    duration: '0:23 excerpt',
+    duration: '0:22 excerpt',
     latest: true,
     streamUrl:
       'https://ncn.vod.immergo.tv/ncn/transcoded/ee63d0f2-4426-4b6c-bf84-5904a6c33496/hls/master.m3u8',
-    clipStart: 15,
+    videoSrc: '/media/stroke_conference_loop.mp4',
+    poster: '/media/stroke_conference_poster.jpg',
+    clipStart: 16,
     clipEnd: 38,
     eventDate: 'September 18, 2026',
     publishedDate: 'September 19, 2026',

@@ -43,7 +43,7 @@ export const cvSourceGroups:CvSourceGroup[] = [
   ]},
   {title:'Media, arts & public-facing work',kicker:'Coverage & interviews',items:[
     {year:'2026',label:'Forsberg event captured majesty of whooping cranes',publisher:'UNMC',url:'https://www.unmc.edu/newsroom/2026/09/15/forsberg-event-captured-majesty-of-sandhill-and-whooping-cranes/'},
-    {year:'2026',label:'The Whooper Highway',publisher:'Cornell Lab of Ornithology',url:'https://www.youtube.com/watch?v=MxTWU6CdMBw'},
+    {year:'2026',label:'iEXCEL Moments: Into Whooperland',publisher:'iEXCEL at UNMC',url:'https://www.youtube.com/watch?v=T4aAYcF5xjo'},
     {year:'2026',label:'Simulating The Human Body',publisher:'The Futurists',url:'https://www.thefuturists.com/episodes/simulating-the-human-body'},
     {year:'2019',label:'iEXCEL interview with Michael Hollins',publisher:'KIOS Omaha Public Radio',url:'https://www.kios.org/live-and-local/2019-11-06/iexcel-program-offers-cutting-edge-technology-to-augment-learning-michael-hollins-explains-on-kios'},
     {year:'2016',label:'KANEKO Storytelling interview',publisher:'KIOS Omaha Public Radio',url:'https://www.kios.org/arts/2016-07-25/newspaper-vs-television-at-kaneko'},
