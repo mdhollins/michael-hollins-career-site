@@ -22,6 +22,7 @@ export const cvSourceGroups:CvSourceGroup[] = [
   {title:'Research, scholarship & funded work',kicker:'Evidence & scholarship',items:[
     {year:'2026',label:'NSF Award No. 2546319',publisher:'National Science Foundation',url:'https://www.nsf.gov/awardsearch/show-award?AWD_ID=2546319'},
     {year:'2026',label:'$8M NSF Award / Nebraska Center for 3D Innovation',publisher:'UNO',url:'https://www.unomaha.edu/news/uno-secures-8m-nsf-award-to-establish-nebraska-center-for-3d-innovation.php'},
+    {year:'2026',label:'Nebraska Rural Health Transformation Program — Initiative 3.2',publisher:'Nebraska DHHS',url:'https://dhhs.ne.gov/Documents/NE%20Final%20Project%20Narrative%20RHTP%202025.pdf'},
     {year:'2026',label:'Implementing Holographic Instruction in Multi-Campus DPT Education',publisher:'UNMC Digital Commons',url:'https://digitalcommons.unmc.edu/iae_spotlight/2026/posters/10/'},
     {year:'2026',label:'Spotlight on Scholarship Awards',publisher:'UNMC',url:'https://www.unmc.edu/academy/scholarship/spotlight.html'},
     {year:'2025',label:'The Current State and Future of Haptics in Healthcare Simulation',publisher:'Society for Simulation in Healthcare',url:'https://www.ssih.org/sites/default/files/2025-10/STORM-Vol.%204%2C%20Issue%202_0.pdf'},

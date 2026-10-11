@@ -258,9 +258,65 @@ describe('homepage copy refresh', () => {
       'Principal investigator',
     );
     assert.equal(
-      await page.getByText(/co[- ]?(?:pi|principal investigator)/i).count(),
+      await nsfMetric.getByText(/co[- ]?(?:pi|principal investigator)/i).count()
+        + await centerCard.getByText(/co[- ]?(?:pi|principal investigator)/i).count()
+        + await researchRecord.getByText(/co[- ]?(?:pi|principal investigator)/i).count(),
       0,
     );
+
+    await context.close();
+  });
+
+  test('adds the rural VR award as a separate funded project without replacing existing work', async () => {
+    const { context, page } = await openPage();
+    const publicProgramUrl = 'https://dhhs.ne.gov/Documents/NE%20Final%20Project%20Narrative%20RHTP%202025.pdf';
+
+    const statewideCard = page.locator('.featureCard').filter({
+      hasText: 'Statewide & rural health education',
+    });
+    assert.equal(await statewideCard.count(), 1);
+    assert.equal(await statewideCard.getAttribute('href'), '#latest-coverage');
+    assert.equal(
+      await statewideCard.locator('p').innerText(),
+      'Holography, VR, connected 3D iWalls and multi-site production used to reduce geographic barriers across Nebraska.',
+    );
+
+    const nsfRecord = page.locator('#research .records a').filter({
+      hasText: '$8M NSF E-RISE / Nebraska Center for 3D Innovation',
+    });
+    assert.equal(await nsfRecord.count(), 1);
+    assert.equal(await nsfRecord.locator('p').innerText(), 'Principal investigator');
+
+    const projectRecord = page.locator('#research .records a').filter({
+      hasText: 'Rural Virtual Reality and Skills Acceleration Network',
+    });
+    assert.equal(await projectRecord.count(), 1);
+    assert.equal(await projectRecord.getAttribute('href'), publicProgramUrl);
+    assert.equal(
+      await nsfRecord.evaluate((record) => record.nextElementSibling?.textContent?.includes('Rural Virtual Reality and Skills Acceleration Network')),
+      true,
+    );
+    assert.equal(await projectRecord.locator(':scope > span').innerText(), 'Through June 2027');
+    assert.equal(await projectRecord.locator('small').innerText(), 'FUNDED PROJECT');
+    assert.equal(
+      await projectRecord.locator('p').innerText(),
+      'Co-Principal Investigator · UNMC iEXCEL work plan: $790,455. Part of Nebraska’s Rural Health Transformation Program, the initiative is expanding VR-enabled simulation, 3D and holographic education, hybrid instruction and tele-mentoring for rural EMS and healthcare professionals.',
+    );
+
+    const evidenceLink = page.locator('.evidenceRail a').filter({
+      hasText: 'Rural VR and Skills Acceleration Network — Initiative 3.2',
+    });
+    assert.equal(await evidenceLink.count(), 1);
+    assert.equal(await evidenceLink.getAttribute('href'), publicProgramUrl);
+
+    const fundedWorkSources = page.locator('#sources .sourceGroup').filter({
+      hasText: 'Research, scholarship & funded work',
+    });
+    const sourceLink = fundedWorkSources.locator('a').filter({
+      hasText: 'Nebraska Rural Health Transformation Program — Initiative 3.2',
+    });
+    assert.equal(await sourceLink.count(), 1);
+    assert.equal(await sourceLink.getAttribute('href'), publicProgramUrl);
 
     await context.close();
   });

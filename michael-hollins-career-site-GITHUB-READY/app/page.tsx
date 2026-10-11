@@ -18,6 +18,7 @@ import {
 
 const scholarship = [
   ['2026','Funded research','$8M NSF E-RISE / Nebraska Center for 3D Innovation','Principal investigator','https://www.unomaha.edu/news/uno-secures-8m-nsf-award-to-establish-nebraska-center-for-3d-innovation.php'],
+  ['Through June 2027','Funded project','Rural Virtual Reality and Skills Acceleration Network','Co-Principal Investigator · UNMC iEXCEL work plan: $790,455. Part of Nebraska’s Rural Health Transformation Program, the initiative is expanding VR-enabled simulation, 3D and holographic education, hybrid instruction and tele-mentoring for rural EMS and healthcare professionals.','https://dhhs.ne.gov/Documents/NE%20Final%20Project%20Narrative%20RHTP%202025.pdf'],
   ['2026','Book chapter','Enhancing Interprofessional Healthcare Simulation to Address the Needs of All Patient Populations','Co-author · Springer','https://link.springer.com/book/10.1007/978-3-032-03947-7'],
   ['2026','Award-recognized scholarship','Implementing Holographic Instruction in Multi-Campus DPT Education','Co-author · Second Place Outstanding Project Award','https://www.unmc.edu/academy/scholarship/spotlight.html'],
   ['2025','Publication','The Current State and Future of Haptics in Healthcare Simulation','Co-author · Society for Simulation in Healthcare STORM','https://www.ssih.org/sites/default/files/2025-10/STORM-Vol.%204%2C%20Issue%202_0.pdf'],
@@ -107,6 +108,7 @@ export default function Home(){
       <a href="https://www.ketv.com/article/unmc-hologram-technology-connects-health-care-providers/68082041" target="_blank" rel="noreferrer"><span>2025</span><b>Hologram technology connects health care providers</b><em>KETV ↗</em></a>
       <a href="https://psc.nebraska.gov/sites/default/files/doc/UNMC%20%20ixcel%20-%20Comments_1.pdf" target="_blank" rel="noreferrer"><span>Statewide</span><b>Tele-training and rural connectivity comments</b><em>Nebraska PSC ↗</em></a>
       <a href="https://www.unmc.edu/iexcel/visualization/holo.html" target="_blank" rel="noreferrer"><span>Program</span><b>Holographic Production & Storytelling</b><em>UNMC ↗</em></a>
+      <a href="https://dhhs.ne.gov/Documents/NE%20Final%20Project%20Narrative%20RHTP%202025.pdf" target="_blank" rel="noreferrer"><span>2026</span><b>Rural VR and Skills Acceleration Network — Initiative 3.2</b><em>Nebraska DHHS ↗</em></a>
     </div>
   </div>
 </section>
